@@ -7,6 +7,8 @@
 
 #include "VulkanResource.h"
 #include "VulkanWindow.h"
+#include "VulkanSwapChain.h"
+#include "VulkanPipeline.h"
 
 namespace vkcpp{
 
@@ -19,18 +21,9 @@ public:
 
     void init(VulkanResource& vkcppResource, VulkanWindow& vkcppWindow);
 private:
-    void createSwapChain(VulkanDevice& vkcppDevice, VkSurfaceKHR surface, GLFWwindow* window);
-    void createImageViews(VulkanDevice& vkcppDevice);
-    void createRenderPass(VulkanDevice& vkcppDevice);
+    VulkanSwapChain vkcppSwapChain;
+    VulkanPipeline vkcppPipeline;
     void createDescriptorSetLayout(VulkanDevice& vkcppDevice);
-    VkSwapchainKHR swapChain;
-    std::vector<VkImage> swapChainImages;
-    VkFormat swapChainImageFormat;
-    VkExtent2D swapChainExtent;
-    std::vector<VkImageView> swapChainImageViews;
-    std::vector<VkFramebuffer> swapChainFramebuffers;
-    VkSampleCountFlagBits msaaSamples = VK_SAMPLE_COUNT_1_BIT;
-    VkRenderPass renderPass;
     VkDescriptorSetLayout descriptorSetLayout;
 }
 ;

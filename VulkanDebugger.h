@@ -26,9 +26,10 @@ public:
         "VK_LAYER_KHRONOS_validation"
     };
 
+
 private:
     VkDebugUtilsMessengerEXT debugMessenger;
-}
+};
 
 ;
 }

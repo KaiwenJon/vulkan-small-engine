@@ -40,7 +40,7 @@ void VulkanResource::createInstance(){
         createInfo.enabledLayerCount = static_cast<uint32_t>(vkcppDebugger.validationLayers.size());
         createInfo.ppEnabledLayerNames = vkcppDebugger.validationLayers.data();
 
-        vkcppDebugger..populateDebugMessengerCreateInfo(debugCreateInfo);
+        vkcppDebugger.populateDebugMessengerCreateInfo(debugCreateInfo);
         createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*) &debugCreateInfo;
     } else {
         createInfo.enabledLayerCount = 0;

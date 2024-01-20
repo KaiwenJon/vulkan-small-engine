@@ -14,12 +14,16 @@ public:
     VulkanDevice(const VulkanDevice& other) = delete;
     VulkanDevice& operator=(const VulkanDevice& other) = delete;
     void setup(VkInstance instance, VkSurfaceKHR surface, VulkanDebugger& vkcppDebugger);
+    VkPhysicalDevice getPhysicalDevice(){return physicalDevice;}
+    VkDevice getLogicalDevice(){return device;}
+    VkQueue getGraphicsQueue(){return graphicsQueue;}
+    VkQueue getPresentQueue(){return presentQueue;}
 
+private:
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
     VkDevice device;
     VkQueue graphicsQueue;
     VkQueue presentQueue;
-private:
     void pickPhysicalDevice(VkInstance instance, VkSurfaceKHR surface);
     void createLogicalDevice(VkSurfaceKHR surface, VulkanDebugger& vkcppDebugger);
     const std::vector<const char*> deviceExtensions = {

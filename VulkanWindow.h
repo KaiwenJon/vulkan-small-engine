@@ -4,25 +4,21 @@
 
 namespace vkcpp{
 
-const uint32_t WIDTH = 800;
-const uint32_t HEIGHT = 600;
-
 class VulkanWindow{
 public:
-    GLFWwindow* window;
     VulkanWindow(int w, int h): WIDTH(w), HEIGHT(h) {};
     ~VulkanWindow();
     VulkanWindow(const VulkanWindow& other) = delete;
     VulkanWindow& operator=(const VulkanWindow& other) = delete;
 
     void init();
-    const uint32_t WIDTH;
-    const uint32_t HEIGHT;
-    bool framebufferResized = false;
-
+    GLFWwindow *getGLFWwindow() const { return window; }
 private:
-    // VkDebugUtilsMessengerEXT debugMessenger;
-    // VkSurfaceKHR surface;
+    const uint32_t WIDTH = 800;
+    const uint32_t HEIGHT = 600;
+    static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
+    GLFWwindow* window;
+    bool framebufferResized = false;
 }
 ;
 

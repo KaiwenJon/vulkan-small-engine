@@ -4,7 +4,7 @@
 
 namespace vkcpp{
 
-void framebufferResizeCallback(GLFWwindow* window, int width, int height){
+void VulkanWindow::framebufferResizeCallback(GLFWwindow* window, int width, int height){
     auto win = reinterpret_cast<VulkanWindow*>(glfwGetWindowUserPointer(window));
     win->framebufferResized = true;
 }

@@ -16,6 +16,8 @@ public:
     VulkanResource(const VulkanResource& other) = delete;
     VulkanResource& operator=(const VulkanResource& other) = delete;
     void init(GLFWwindow* window);
+    VulkanDevice& getDevice() {return vkcppDevice;}
+    VkSurfaceKHR getSurface() {return surface;}
 private:
 
     void createInstance();

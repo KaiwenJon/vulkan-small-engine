@@ -12,11 +12,11 @@ namespace vkcpp{
 
 void VulkanDevice::setup(VkInstance instance, VkSurfaceKHR surface, VulkanDebugger& vkcppDebugger){
     pickPhysicalDevice(instance, surface);
+    indices = findQueueFamilies(physicalDevice, surface);
     createLogicalDevice(surface, vkcppDebugger); // will use phyisical device we just picked.
 }
 
 void VulkanDevice::createLogicalDevice(VkSurfaceKHR surface, VulkanDebugger& vkcppDebugger){
-    QueueFamilyIndices indices = findQueueFamilies(physicalDevice, surface);
 
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
     std::set<uint32_t> uniqueQueueFamilies = {indices.graphicsFamily.value(), indices.presentFamily.value()};

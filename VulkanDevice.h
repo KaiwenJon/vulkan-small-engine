@@ -4,6 +4,7 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 #include "VulkanDebugger.h"
+#include "utils.h"
 
 namespace vkcpp{
 
@@ -18,12 +19,14 @@ public:
     VkDevice getLogicalDevice(){return device;}
     VkQueue getGraphicsQueue(){return graphicsQueue;}
     VkQueue getPresentQueue(){return presentQueue;}
+    QueueFamilyIndices getQueueFamilyIndices(){return indices;}
 
 private:
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
     VkDevice device;
     VkQueue graphicsQueue;
     VkQueue presentQueue;
+    QueueFamilyIndices indices;
     void pickPhysicalDevice(VkInstance instance, VkSurfaceKHR surface);
     void createLogicalDevice(VkSurfaceKHR surface, VulkanDebugger& vkcppDebugger);
     const std::vector<const char*> deviceExtensions = {

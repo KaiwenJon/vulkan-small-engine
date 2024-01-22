@@ -10,15 +10,21 @@ namespace vkcpp{
 
 class VulkanCommandManager{
 public:
-    VulkanCommandManager();
+    VulkanCommandManager(VulkanDevice& vkcppDevice) : vkcppDevice(vkcppDevice){}
     ~VulkanCommandManager();
     VulkanCommandManager(const VulkanCommandManager& other) = delete;
     VulkanCommandManager& operator=(const VulkanCommandManager& other) = delete;
 
-    void init(VulkanDevice vkcppDevice);
+    void init();
+    void createCommandBuffersRender(int num);
+    VkCommandBuffer beginSingleTimeCommands();
+    void endSingleTimeCommands(VkCommandBuffer commandBuffer);
 
 private:
+    VulkanDevice& vkcppDevice;
     VkCommandPool commandPool;
+    std::vector<VkCommandBuffer> commandBuffers;
+
 }
 ;
 }

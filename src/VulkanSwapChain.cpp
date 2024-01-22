@@ -9,19 +9,21 @@
 namespace vkcpp{
 
 
-void VulkanSwapChain::init(VulkanResource& vkcppResource, VulkanWindow& vkcppWindow){
-    VulkanDevice& vkcppDevice = vkcppResource.getDevice();
-    createSwapChain(vkcppDevice, vkcppResource.getSurface(), vkcppWindow.getGLFWwindow());
-    createImageViews(vkcppDevice);
-    createRenderPass(vkcppDevice);
-    createColorResources(vkcppDevice);
-    createDepthResources(vkcppDevice);
-    createFramebuffers(vkcppDevice.getLogicalDevice());
-    createTextureImage(vkcppDevice, "textures/viking_room.png");
+void VulkanSwapChain::init(VulkanWindow& vkcppWindow){
+    createSwapChain(vkcppWindow.getGLFWwindow());
+    createImageViews();
+    createRenderPass();
+    createColorResources();
+    createDepthResources();
+    createFramebuffers();
+    createTextureImage("../resources/viking_room.png");
 }
 
-void VulkanSwapChain::createSwapChain(VulkanDevice& vkcppDevice, VkSurfaceKHR surface, GLFWwindow* window){
-    SwapChainSupportDetails swapChainSupport = querySwapChainSupport(vkcppDevice.getPhysicalDevice(), surface);
+void VulkanSwapChain::createSwapChain(GLFWwindow* window){
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    VkPhysicalDevice physicalDevice = vkcppDevice.getPhysicalDevice();
+
+    SwapChainSupportDetails swapChainSupport = querySwapChainSupport(physicalDevice, vkcppDevice.getSurface());
 
     VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
     VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
@@ -34,7 +36,7 @@ void VulkanSwapChain::createSwapChain(VulkanDevice& vkcppDevice, VkSurfaceKHR su
 
     VkSwapchainCreateInfoKHR createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-    createInfo.surface = surface;
+    createInfo.surface = vkcppDevice.getSurface();
 
     createInfo.minImageCount = imageCount;
     createInfo.imageFormat = surfaceFormat.format;
@@ -59,23 +61,24 @@ void VulkanSwapChain::createSwapChain(VulkanDevice& vkcppDevice, VkSurfaceKHR su
     createInfo.presentMode = presentMode;
     createInfo.clipped = VK_TRUE;
 
-    if (vkCreateSwapchainKHR(vkcppDevice.getLogicalDevice(), &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
+    if (vkCreateSwapchainKHR(device, &createInfo, nullptr, &swapChain) != VK_SUCCESS) {
         throw std::runtime_error("failed to create swap chain!");
     }
 
-    vkGetSwapchainImagesKHR(vkcppDevice.getLogicalDevice(), swapChain, &imageCount, nullptr);
+    vkGetSwapchainImagesKHR(device, swapChain, &imageCount, nullptr);
     swapChainImages.resize(imageCount);
-    vkGetSwapchainImagesKHR(vkcppDevice.getLogicalDevice(), swapChain, &imageCount, swapChainImages.data());
+    vkGetSwapchainImagesKHR(device, swapChain, &imageCount, swapChainImages.data());
 
     swapChainImageFormat = surfaceFormat.format;
     swapChainExtent = extent;
 }
 
-void VulkanSwapChain::createImageViews(VulkanDevice& vkcppDevice){
+void VulkanSwapChain::createImageViews(){
+    VkDevice device = vkcppDevice.getLogicalDevice();
     swapChainImageViews.resize(swapChainImages.size());
 
     for (uint32_t i = 0; i < swapChainImages.size(); i++) {
-        swapChainImageViews[i] = createImageView(vkcppDevice.getLogicalDevice(), swapChainImages[i], swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
+        swapChainImageViews[i] = createImageView(device, swapChainImages[i], swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
     }
 }
 
@@ -100,8 +103,10 @@ VkImageView createImageView(VkDevice device, VkImage image, VkFormat format, VkI
 }
 
 
-void VulkanSwapChain::createRenderPass(VulkanDevice& vkcppDevice) {
-    msaaSamples = getMaxUsableSampleCount(vkcppDevice.getPhysicalDevice());
+void VulkanSwapChain::createRenderPass() {
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    VkPhysicalDevice physicalDevice = vkcppDevice.getPhysicalDevice();
+    msaaSamples = getMaxUsableSampleCount(physicalDevice);
 
     VkAttachmentDescription colorAttachment{};
     colorAttachment.format = swapChainImageFormat;
@@ -114,7 +119,7 @@ void VulkanSwapChain::createRenderPass(VulkanDevice& vkcppDevice) {
     colorAttachment.finalLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
     VkAttachmentDescription depthAttachment{};
-    depthAttachment.format = findDepthFormat(vkcppDevice.getPhysicalDevice());
+    depthAttachment.format = findDepthFormat(physicalDevice);
     depthAttachment.samples = msaaSamples;
     depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
     depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -170,27 +175,30 @@ void VulkanSwapChain::createRenderPass(VulkanDevice& vkcppDevice) {
     renderPassInfo.dependencyCount = 1;
     renderPassInfo.pDependencies = &dependency;
 
-    if (vkCreateRenderPass(vkcppDevice.getLogicalDevice(), &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
+    if (vkCreateRenderPass(device, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
         throw std::runtime_error("failed to create render pass!");
     }
 }
 
-void VulkanSwapChain::createColorResources(VulkanDevice& vkcppDevice){
+void VulkanSwapChain::createColorResources(){
     VkFormat colorFormat = swapChainImageFormat;
 
-    createImage(vkcppDevice, swapChainExtent.width, swapChainExtent.height, 1, msaaSamples, colorFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, colorImage, colorImageMemory);
+    createImage(swapChainExtent.width, swapChainExtent.height, 1, msaaSamples, colorFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT | VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, colorImage, colorImageMemory);
     colorImageView = createImageView(vkcppDevice.getLogicalDevice(), colorImage, colorFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
     
 }
 
-void VulkanSwapChain::createDepthResources(VulkanDevice& vkcppDevice) {
+void VulkanSwapChain::createDepthResources() {
     VkFormat depthFormat = findDepthFormat(vkcppDevice.getPhysicalDevice());
 
-    createImage(vkcppDevice, swapChainExtent.width, swapChainExtent.height, 1, msaaSamples, depthFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, depthImage, depthImageMemory);
+    createImage(swapChainExtent.width, swapChainExtent.height, 1, msaaSamples, depthFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, depthImage, depthImageMemory);
     depthImageView = createImageView(vkcppDevice.getLogicalDevice(), depthImage, depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT, 1);
 }
 
-void createImage(VulkanDevice& vkcppDevice, uint32_t width, uint32_t height, uint32_t mipLevels, VkSampleCountFlagBits numSamples, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory) {
+void VulkanSwapChain::createImage(uint32_t width, uint32_t height, uint32_t mipLevels, VkSampleCountFlagBits numSamples, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory) {
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    VkPhysicalDevice physicalDevice = vkcppDevice.getPhysicalDevice();
+
     VkImageCreateInfo imageInfo{};
     imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
     imageInfo.imageType = VK_IMAGE_TYPE_2D;
@@ -206,26 +214,27 @@ void createImage(VulkanDevice& vkcppDevice, uint32_t width, uint32_t height, uin
     imageInfo.samples = numSamples;
     imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-    if (vkCreateImage(vkcppDevice.getLogicalDevice(), &imageInfo, nullptr, &image) != VK_SUCCESS) {
+    if (vkCreateImage(device, &imageInfo, nullptr, &image) != VK_SUCCESS) {
         throw std::runtime_error("failed to create image!");
     }
 
     VkMemoryRequirements memRequirements;
-    vkGetImageMemoryRequirements(vkcppDevice.getLogicalDevice(), image, &memRequirements);
+    vkGetImageMemoryRequirements(device, image, &memRequirements);
 
     VkMemoryAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     allocInfo.allocationSize = memRequirements.size;
-    allocInfo.memoryTypeIndex = findMemoryType(vkcppDevice.getPhysicalDevice(), memRequirements.memoryTypeBits, properties);
+    allocInfo.memoryTypeIndex = findMemoryType(physicalDevice, memRequirements.memoryTypeBits, properties);
 
-    if (vkAllocateMemory(vkcppDevice.getLogicalDevice(), &allocInfo, nullptr, &imageMemory) != VK_SUCCESS) {
+    if (vkAllocateMemory(device, &allocInfo, nullptr, &imageMemory) != VK_SUCCESS) {
         throw std::runtime_error("failed to allocate image memory!");
     }
 
-    vkBindImageMemory(vkcppDevice.getLogicalDevice(), image, imageMemory, 0);
+    vkBindImageMemory(device, image, imageMemory, 0);
 }
 
-void VulkanSwapChain::createFramebuffers(VkDevice device) {
+void VulkanSwapChain::createFramebuffers() {
+    VkDevice device = vkcppDevice.getLogicalDevice();
     swapChainFramebuffers.resize(swapChainImageViews.size());
 
     for (size_t i = 0; i < swapChainImageViews.size(); i++) {
@@ -250,7 +259,7 @@ void VulkanSwapChain::createFramebuffers(VkDevice device) {
     }
 }
 
-void VulkanSwapChain::createTextureImage(VulkanDevice& vkcppDevice, const std::string& texture_path) {
+void VulkanSwapChain::createTextureImage(const std::string& texture_path) {
     int texWidth, texHeight, texChannels;
     stbi_uc* pixels = stbi_load(texture_path.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
     VkDeviceSize imageSize = texWidth * texHeight * 4;
@@ -265,23 +274,26 @@ void VulkanSwapChain::createTextureImage(VulkanDevice& vkcppDevice, const std::s
     createBuffer(imageSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer, stagingBufferMemory);
 
     void* data;
-    vkMapMemory(device, stagingBufferMemory, 0, imageSize, 0, &data);
+    vkMapMemory(vkcppDevice.getLogicalDevice(), stagingBufferMemory, 0, imageSize, 0, &data);
         memcpy(data, pixels, static_cast<size_t>(imageSize));
-    vkUnmapMemory(device, stagingBufferMemory);
+    vkUnmapMemory(vkcppDevice.getLogicalDevice(), stagingBufferMemory);
 
     stbi_image_free(pixels);
 
-    createImage(vkcppDevice, texWidth, texHeight, mipLevels, VK_SAMPLE_COUNT_1_BIT, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, textureImage, textureImageMemory);
+    createImage(texWidth, texHeight, mipLevels, VK_SAMPLE_COUNT_1_BIT, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, textureImage, textureImageMemory);
 
     transitionImageLayout(textureImage, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, mipLevels);
     copyBufferToImage(stagingBuffer, textureImage, static_cast<uint32_t>(texWidth), static_cast<uint32_t>(texHeight));
     //transitioned to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL while generating mipmaps
 
-    vkDestroyBuffer(device, stagingBuffer, nullptr);
-    vkFreeMemory(device, stagingBufferMemory, nullptr);
+    vkDestroyBuffer(vkcppDevice.getLogicalDevice(), stagingBuffer, nullptr);
+    vkFreeMemory(vkcppDevice.getLogicalDevice(), stagingBufferMemory, nullptr);
 
     generateMipmaps(textureImage, VK_FORMAT_R8G8B8A8_SRGB, texWidth, texHeight, mipLevels);
 }
+
+
+
 
 VkSampleCountFlagBits getMaxUsableSampleCount(VkPhysicalDevice physicalDevice) {
     VkPhysicalDeviceProperties physicalDeviceProperties;

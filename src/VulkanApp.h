@@ -17,9 +17,9 @@ public:
     void run();
 
 private:
-    VulkanWindow vkcppWindow;
-    VulkanResource vkcppResource;
-    VulkanRenderer vkcppRenderer;
+    VulkanWindow vkcppWindow{800, 600};
+    VulkanResource vkcppResource{vkcppWindow.getGLFWwindow()};
+    VulkanRenderer vkcppRenderer{vkcppResource};
 };
 }
 

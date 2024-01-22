@@ -6,11 +6,15 @@
 #include "utils.h"
 namespace vkcpp{
 
-void VulkanRenderer::init(VulkanResource& vkcppResource, VulkanWindow& vkcppWindow){
-    vkcppSwapChain.init(vkcppResource, vkcppWindow);
+void VulkanRenderer::init(VulkanWindow& vkcppWindow){
+    vkcppSwapChain.init(vkcppWindow);
     createDescriptorSetLayout(vkcppResource.getDevice());
     vkcppPipeline.createPipeline(vkcppResource.getDevice().getLogicalDevice(), vkcppSwapChain, descriptorSetLayout);
     
+}
+
+void VulkanRenderer::drawFrame(){
+
 }
 
 void VulkanRenderer::createDescriptorSetLayout(VulkanDevice& vkcppDevice) {

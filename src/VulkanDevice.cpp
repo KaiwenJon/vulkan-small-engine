@@ -10,13 +10,18 @@
 namespace vkcpp{
 
 
-void VulkanDevice::setup(VkInstance instance, VkSurfaceKHR surface, VulkanDebugger& vkcppDebugger){
-    pickPhysicalDevice(instance, surface);
+void VulkanDevice::setup(VkInstance instance, VulkanDebugger& vkcppDebugger, GLFWwindow* window){
+    // create surface
+    if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
+        throw std::runtime_error("failed to create window surface!");
+    }
+
+    pickPhysicalDevice(instance);
     indices = findQueueFamilies(physicalDevice, surface);
-    createLogicalDevice(surface, vkcppDebugger); // will use phyisical device we just picked.
+    createLogicalDevice(vkcppDebugger); // will use phyisical device we just picked.
 }
 
-void VulkanDevice::createLogicalDevice(VkSurfaceKHR surface, VulkanDebugger& vkcppDebugger){
+void VulkanDevice::createLogicalDevice(VulkanDebugger& vkcppDebugger){
 
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
     std::set<uint32_t> uniqueQueueFamilies = {indices.graphicsFamily.value(), indices.presentFamily.value()};
@@ -60,7 +65,7 @@ void VulkanDevice::createLogicalDevice(VkSurfaceKHR surface, VulkanDebugger& vkc
     vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &presentQueue);
 }
 
-void VulkanDevice::pickPhysicalDevice(VkInstance instance, VkSurfaceKHR surface){
+void VulkanDevice::pickPhysicalDevice(VkInstance instance){
     uint32_t deviceCount = 0;
     vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
 

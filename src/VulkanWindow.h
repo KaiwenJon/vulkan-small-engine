@@ -6,7 +6,9 @@ namespace vkcpp{
 
 class VulkanWindow{
 public:
-    VulkanWindow(int w, int h): WIDTH(w), HEIGHT(h) {};
+    VulkanWindow(int w, int h): WIDTH(w), HEIGHT(h) {
+        init();
+    };
     ~VulkanWindow();
     VulkanWindow(const VulkanWindow& other) = delete;
     VulkanWindow& operator=(const VulkanWindow& other) = delete;
@@ -14,8 +16,8 @@ public:
     void init();
     GLFWwindow *getGLFWwindow() const { return window; }
 private:
-    const uint32_t WIDTH = 800;
-    const uint32_t HEIGHT = 600;
+    uint32_t WIDTH;
+    uint32_t HEIGHT;
     static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
     GLFWwindow* window;
     bool framebufferResized = false;

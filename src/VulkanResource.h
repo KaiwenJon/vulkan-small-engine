@@ -6,28 +6,34 @@
 
 #include "VulkanDebugger.h"
 #include "VulkanDevice.h"
+#include "VulkanCommand.h"
 
-namespace vkcpp{
+namespace vkcpp
+{
 
-class VulkanResource{
-public:
-    VulkanResource();
-    ~VulkanResource();
-    VulkanResource(const VulkanResource& other) = delete;
-    VulkanResource& operator=(const VulkanResource& other) = delete;
-    void init(GLFWwindow* window);
-    VulkanDevice& getDevice() {return vkcppDevice;}
-    VkSurfaceKHR getSurface() {return surface;}
-private:
+    class VulkanResource
+    {
+    public:
+        VulkanResource(GLFWwindow *window)
+        {
+            createInstance();
+            vkcppDebugger.setup(instance);
+            vkcppDevice.setup(instance, vkcppDebugger, window);
+            vkcppCmdManager.init();
+        };
+        ~VulkanResource();
+        VulkanResource(const VulkanResource &other) = delete;
+        VulkanResource &operator=(const VulkanResource &other) = delete;
+        void init(GLFWwindow *window);
+        VulkanDevice &getDevice() { return vkcppDevice; }
 
-    void createInstance();
-    void createSurface(GLFWwindow* window);
-    VkInstance instance;
-    VkSurfaceKHR surface;
-    VulkanDebugger vkcppDebugger;
-    VulkanDevice vkcppDevice;
-}
-;
+    private:
+        void createInstance();
+        VkInstance instance;
+        VulkanDebugger vkcppDebugger;
+        VulkanDevice vkcppDevice;
+        VulkanCommandManager vkcppCmdManager{vkcppDevice};
+    };
 };
 
 #endif

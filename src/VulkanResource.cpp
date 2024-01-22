@@ -8,14 +8,6 @@ namespace vkcpp{
 
 
 
-void VulkanResource::init(GLFWwindow* window){
-    createInstance();
-    vkcppDebugger.setup(instance);
-    createSurface(window);
-    vkcppDevice.setup(instance, surface, vkcppDebugger);
-}
-
-
 void VulkanResource::createInstance(){
     vkcppDebugger.checkValidationLayerSupport();
 
@@ -50,12 +42,6 @@ void VulkanResource::createInstance(){
 
     if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
         throw std::runtime_error("failed to create instance!");
-    }
-}
-
-void VulkanResource::createSurface(GLFWwindow* window){
-    if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create window surface!");
     }
 }
 

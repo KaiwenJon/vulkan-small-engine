@@ -4,7 +4,7 @@
 
 namespace vkcpp{
 
-void VulkanBuffer::create(unsigned char* hostData, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties){
+void VulkanBuffer::create(void* hostData, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties){
     VkDevice device = vkcppDevice.getLogicalDevice();
     createBuffer(size, usage, properties, buffer, bufferMemory);
     void* data;
@@ -49,6 +49,15 @@ void VulkanBuffer::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkM
     vkBindBufferMemory(device, buffer, bufferMemory, 0);
 }
 
+void VulkanBuffer::copyBufferTo(VulkanCommandManager& vkcppCmdManager, VkBuffer dstBuffer, VkDeviceSize size) {
+    VkCommandBuffer commandBuffer = vkcppCmdManager.beginSingleTimeCommands();
+
+    VkBufferCopy copyRegion{};
+    copyRegion.size = size;
+    vkCmdCopyBuffer(commandBuffer, buffer, dstBuffer, 1, &copyRegion);
+
+    vkcppCmdManager.endSingleTimeCommands(commandBuffer);
+}
 
 
 

@@ -57,18 +57,5 @@ static std::vector<char> readFile(const std::string& filename);
 
 VkShaderModule createShaderModule(const std::vector<char>& code, VkDevice device);
 
-struct Vertex {
-    glm::vec3 pos;
-    glm::vec3 color;
-    glm::vec2 texCoord;
-
-    static VkVertexInputBindingDescription getBindingDescription();
-
-    static std::array<VkVertexInputAttributeDescription, 3> getAttributeDescriptions();
-
-    bool operator==(const Vertex& other) const;
-};
-
 }
-
 #endif

@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include "VulkanDevice.h"
+#include "VulkanCommand.h"
 
 namespace vkcpp{
 
@@ -15,7 +16,7 @@ public:
     VulkanBuffer(const VulkanBuffer& other) = delete;
     VulkanBuffer& operator=(const VulkanBuffer& other) = delete;
     void create(
-        unsigned char *hostData, 
+        void *hostData, 
         VkDeviceSize size, 
         VkBufferUsageFlags usage, 
         VkMemoryPropertyFlags properties
@@ -23,6 +24,12 @@ public:
 
     void destroy();
     VkBuffer getBuffer(){return buffer;}
+    void copyBufferTo(
+        VulkanCommandManager& vkcppCmdManager,  
+        VkBuffer dstBuffer, 
+        VkDeviceSize size
+    );
+
 
 private:
     void createBuffer(

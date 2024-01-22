@@ -1,6 +1,25 @@
 #include "VulkanBuffer.h"
 
+#include <cstring>
+
 namespace vkcpp{
+
+void VulkanBuffer::create(unsigned char* hostData, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties){
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    createBuffer(size, usage, properties, buffer, bufferMemory);
+    void* data;
+    vkMapMemory(device, bufferMemory, 0, size, 0, &data);
+        memcpy(data, hostData, static_cast<size_t>(size));
+    vkUnmapMemory(device, bufferMemory);
+
+}
+
+void VulkanBuffer::destroy(){
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    vkDestroyBuffer(device, buffer, nullptr);
+    vkFreeMemory(device, bufferMemory, nullptr);
+}
+
 
 void VulkanBuffer::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory) {
     VkDevice device = vkcppDevice.getLogicalDevice();

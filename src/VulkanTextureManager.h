@@ -18,7 +18,7 @@ public:
     VulkanTextureManager(const VulkanTextureManager& other) = delete;
     VulkanTextureManager& operator=(const VulkanTextureManager& other) = delete;
     
-    void createTextureImage(VulkanCommandManager& vkcppCmdManager, const std::string& texture_path);
+    void createTexture(VulkanCommandManager& vkcppCmdManager, const std::string& texture_path);
 private:
     VulkanDevice& vkcppDevice;
 

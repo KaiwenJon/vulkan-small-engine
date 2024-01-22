@@ -14,6 +14,16 @@ public:
     ~VulkanBuffer();
     VulkanBuffer(const VulkanBuffer& other) = delete;
     VulkanBuffer& operator=(const VulkanBuffer& other) = delete;
+    void create(
+        unsigned char *hostData, 
+        VkDeviceSize size, 
+        VkBufferUsageFlags usage, 
+        VkMemoryPropertyFlags properties
+    );
+
+    void destroy();
+    VkBuffer getBuffer(){return buffer;}
+
 private:
     void createBuffer(
         VkDeviceSize size, 
@@ -24,6 +34,8 @@ private:
     );
 
     VulkanDevice& vkcppDevice;
+    VkBuffer buffer;
+    VkDeviceMemory bufferMemory;
 
 }
 ;

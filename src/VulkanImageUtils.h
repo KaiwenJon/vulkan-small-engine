@@ -51,6 +51,24 @@ void generateMipmaps(
     int32_t texHeight, 
     uint32_t mipLevels
 );
+
+void transitionImageLayout(
+    VulkanCommandManager& vkcppCmdManager, 
+    VkImage image, 
+    VkFormat format, 
+    VkImageLayout oldLayout, 
+    VkImageLayout newLayout, 
+    uint32_t mipLevels
+);
+
+void copyBufferToImage(
+    VulkanCommandManager& vkcppCmdManager, 
+    VkBuffer buffer, 
+    VkImage image, 
+    uint32_t width, 
+    uint32_t height
+);
+
 }
 
 #endif

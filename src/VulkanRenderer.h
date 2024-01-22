@@ -12,6 +12,7 @@
 #include "VulkanPipeline.h"
 #include "VulkanCommand.h"
 #include "VulkanTextureManager.h"
+#include "VulkanDescriptorManager.h"
 
 namespace vkcpp{
 
@@ -23,7 +24,8 @@ public:
     vkcppResource(vkcppResource),
     vkcppSwapChain(vkcppResource.getDevice(), window),
     vkcppCmdManager(vkcppResource.getCmdManager()),
-    vkcppTexManager(vkcppResource.getDevice())
+    vkcppTextureManager(vkcppResource.getDevice()),
+    vkcppDescriptorManager(vkcppResource.getDevice())
     {}
     ;
     ~VulkanRenderer();
@@ -40,10 +42,9 @@ private:
 
     // Renderer's resources
     VulkanSwapChain vkcppSwapChain;
-    VulkanTextureManager vkcppTexManager;
+    VulkanTexture vkcppTextureManager;
     VulkanPipeline vkcppPipeline;
-    void createDescriptorSetLayout(VulkanDevice& vkcppDevice);
-    VkDescriptorSetLayout descriptorSetLayout;
+    VulkanDescriptorManager vkcppDescriptorManager;
 }
 ;
 };

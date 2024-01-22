@@ -28,7 +28,6 @@ private:
     void createColorResources();
     void createDepthResources();
     void createFramebuffers();
-    void createTextureImage(const std::string& texture_path);
     
     GLFWwindow* window;
     VulkanDevice& vkcppDevice;

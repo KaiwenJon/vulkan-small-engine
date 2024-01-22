@@ -11,8 +11,8 @@ void VulkanBuffer::create(void* hostData, VkDeviceSize size, VkBufferUsageFlags 
     vkMapMemory(device, bufferMemory, 0, size, 0, &data);
         memcpy(data, hostData, static_cast<size_t>(size));
     vkUnmapMemory(device, bufferMemory);
-
 }
+
 
 void VulkanBuffer::destroy(){
     VkDevice device = vkcppDevice.getLogicalDevice();

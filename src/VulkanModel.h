@@ -25,7 +25,7 @@ struct Vertex {
     glm::vec3 color;
     glm::vec2 texCoord;
 
-    static std::vector<VkVertexInputBindingDescription> getBindingDescription();
+    static std::vector<VkVertexInputBindingDescription> getBindingDescriptions();
     static std::vector<VkVertexInputAttributeDescription> getAttributeDescriptions();
 
     bool operator==(const Vertex& other) const{

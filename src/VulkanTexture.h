@@ -1,5 +1,5 @@
-#ifndef VULKANTEXTUREMANAGER_H
-#define VULKANTEXTUREMANAGER_H
+#ifndef VULKANTEXTURE_H
+#define VULKANTEXTURE_H
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -11,12 +11,12 @@
 
 namespace vkcpp{
 
-class VulkanTextureManager{
+class VulkanTexture{
 public:
-    VulkanTextureManager(VulkanDevice& vkcppDevice) : vkcppDevice(vkcppDevice){};
-    ~VulkanTextureManager();
-    VulkanTextureManager(const VulkanTextureManager& other) = delete;
-    VulkanTextureManager& operator=(const VulkanTextureManager& other) = delete;
+    VulkanTexture(VulkanDevice& vkcppDevice) : vkcppDevice(vkcppDevice){};
+    ~VulkanTexture();
+    VulkanTexture(const VulkanTexture& other) = delete;
+    VulkanTexture& operator=(const VulkanTexture& other) = delete;
     
     void createTexture(VulkanCommandManager& vkcppCmdManager, const std::string& texture_path);
 private:

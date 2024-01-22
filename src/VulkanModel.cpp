@@ -7,7 +7,7 @@
 
 namespace vkcpp{
 
-std::vector<VkVertexInputBindingDescription> Vertex::getBindingDescription(){
+std::vector<VkVertexInputBindingDescription> Vertex::getBindingDescriptions(){
     std::vector<VkVertexInputBindingDescription> bindingDescriptions(1);
     bindingDescriptions[0].binding = 0;
     bindingDescriptions[0].stride = sizeof(Vertex);

@@ -7,7 +7,7 @@
 
 namespace vkcpp{
 
-void VulkanTextureManager::createTexture(VulkanCommandManager& vkcppCmdManager, const std::string& texture_path) {
+void VulkanTexture::createTexture(VulkanCommandManager& vkcppCmdManager, const std::string& texture_path) {
     VkDevice device = vkcppDevice.getLogicalDevice();
     VkPhysicalDevice physicalDevice = vkcppDevice.getPhysicalDevice();
     int texWidth, texHeight, texChannels;

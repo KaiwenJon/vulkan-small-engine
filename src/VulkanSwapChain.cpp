@@ -14,7 +14,6 @@ void VulkanSwapChain::init(){
     createColorResources();
     createDepthResources();
     createFramebuffers();
-    createTextureImage("../resources/viking_room.png");
 }
 
 void VulkanSwapChain::createSwapChain(){

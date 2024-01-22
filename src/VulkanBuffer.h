@@ -22,7 +22,7 @@ public:
         VkMemoryPropertyFlags properties
     );
 
-    void destroy();
+    virtual void destroy();
     VkBuffer getBuffer(){return buffer;}
     void copyBufferTo(
         VulkanCommandManager& vkcppCmdManager,  
@@ -31,7 +31,7 @@ public:
     );
 
 
-private:
+protected:
     void createBuffer(
         VkDeviceSize size, 
         VkBufferUsageFlags usage, 

@@ -10,6 +10,7 @@ void VulkanRenderer::init(VulkanResource& vkcppResource, VulkanWindow& vkcppWind
     vkcppSwapChain.init(vkcppResource, vkcppWindow);
     createDescriptorSetLayout(vkcppResource.getDevice());
     vkcppPipeline.createPipeline(vkcppResource.getDevice().getLogicalDevice(), vkcppSwapChain, descriptorSetLayout);
+    
 }
 
 void VulkanRenderer::createDescriptorSetLayout(VulkanDevice& vkcppDevice) {

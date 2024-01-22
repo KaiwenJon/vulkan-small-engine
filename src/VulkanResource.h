@@ -22,8 +22,8 @@ namespace vkcpp
         VulkanDevice &getDevice() { return vkcppDevice; }
         VulkanCommandManager& getCmdManager(){return vkcppCmdManager;}
     private:
-        GLFWwindow *window;
         void createInstance();
+        GLFWwindow *window;
         VkInstance instance;
         VulkanDebugger vkcppDebugger;
         VulkanDevice vkcppDevice;

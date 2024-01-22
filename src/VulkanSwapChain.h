@@ -29,18 +29,6 @@ private:
     void createDepthResources();
     void createFramebuffers();
     void createTextureImage(const std::string& texture_path);
-    void createImage(
-        uint32_t width, 
-        uint32_t height, 
-        uint32_t mipLevels, 
-        VkSampleCountFlagBits numSamples, 
-        VkFormat format, 
-        VkImageTiling tiling, 
-        VkImageUsageFlags usage, 
-        VkMemoryPropertyFlags properties, 
-        VkImage& image, 
-        VkDeviceMemory& imageMemory
-    );
     
     GLFWwindow* window;
     VulkanDevice& vkcppDevice;
@@ -62,11 +50,6 @@ private:
     VkDeviceMemory depthImageMemory;
     VkImageView depthImageView;
 
-    uint32_t mipLevels;
-    VkImage textureImage;
-    VkDeviceMemory textureImageMemory;
-    VkImageView textureImageView;
-    VkSampler textureSampler;
 }
 ;
 }

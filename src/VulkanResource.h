@@ -14,20 +14,15 @@ namespace vkcpp
     class VulkanResource
     {
     public:
-        VulkanResource(GLFWwindow *window)
-        {
-            createInstance();
-            vkcppDebugger.setup(instance);
-            vkcppDevice.setup(instance, vkcppDebugger, window);
-            vkcppCmdManager.init();
-        };
+        VulkanResource(GLFWwindow *window) : window(window){};
         ~VulkanResource();
         VulkanResource(const VulkanResource &other) = delete;
         VulkanResource &operator=(const VulkanResource &other) = delete;
-        void init(GLFWwindow *window);
+        void init();
         VulkanDevice &getDevice() { return vkcppDevice; }
-
+        VulkanCommandManager& getCmdManager(){return vkcppCmdManager;}
     private:
+        GLFWwindow *window;
         void createInstance();
         VkInstance instance;
         VulkanDebugger vkcppDebugger;

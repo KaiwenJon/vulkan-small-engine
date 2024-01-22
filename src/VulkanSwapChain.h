@@ -8,17 +8,21 @@ namespace vkcpp{
 
 class VulkanSwapChain{
 public:
-    VulkanSwapChain(VulkanDevice& vkcppDevice):vkcppDevice(vkcppDevice){};
+    VulkanSwapChain(VulkanDevice& vkcppDevice, GLFWwindow* window)
+    :
+    vkcppDevice(vkcppDevice),
+    window(window)
+    {};
     ~VulkanSwapChain();
     VulkanSwapChain(const VulkanSwapChain& other) = delete;
     VulkanSwapChain& operator=(const VulkanSwapChain& other) = delete;
 
-    void init(VulkanWindow& vkcppWindow);
+    void init();
     VkSwapchainKHR getSwapChain(){return swapChain;}
     VkRenderPass getRenderPass(){return renderPass;}
     VkSampleCountFlagBits getMsaaSamples(){return msaaSamples;}
 private:
-    void createSwapChain(GLFWwindow* window);
+    void createSwapChain();
     void createImageViews();
     void createRenderPass();
     void createColorResources();
@@ -38,6 +42,7 @@ private:
         VkDeviceMemory& imageMemory
     );
     
+    GLFWwindow* window;
     VulkanDevice& vkcppDevice;
 
     VkSwapchainKHR swapChain;

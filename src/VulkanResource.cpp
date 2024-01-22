@@ -6,7 +6,12 @@
 
 namespace vkcpp{
 
-
+void VulkanResource::init(){
+    createInstance();
+    vkcppDebugger.setup(instance);
+    vkcppDevice.setup(instance, vkcppDebugger, window);
+    vkcppCmdManager.init();
+}
 
 void VulkanResource::createInstance(){
     vkcppDebugger.checkValidationLayerSupport();

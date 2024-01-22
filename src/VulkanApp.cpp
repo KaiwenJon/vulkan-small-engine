@@ -4,7 +4,9 @@
 namespace vkcpp{
 
 void VulkanApp::run(){
-    vkcppRenderer.init(vkcppWindow);
+    vkcppWindow.init();
+    vkcppResource.init();
+    vkcppRenderer.init();
 }
 
 }

@@ -9,8 +9,8 @@
 namespace vkcpp{
 
 
-void VulkanSwapChain::init(VulkanWindow& vkcppWindow){
-    createSwapChain(vkcppWindow.getGLFWwindow());
+void VulkanSwapChain::init(){
+    createSwapChain();
     createImageViews();
     createRenderPass();
     createColorResources();
@@ -19,7 +19,7 @@ void VulkanSwapChain::init(VulkanWindow& vkcppWindow){
     createTextureImage("../resources/viking_room.png");
 }
 
-void VulkanSwapChain::createSwapChain(GLFWwindow* window){
+void VulkanSwapChain::createSwapChain(){
     VkDevice device = vkcppDevice.getLogicalDevice();
     VkPhysicalDevice physicalDevice = vkcppDevice.getPhysicalDevice();
 

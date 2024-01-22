@@ -6,9 +6,7 @@ namespace vkcpp{
 
 class VulkanWindow{
 public:
-    VulkanWindow(int w, int h): WIDTH(w), HEIGHT(h) {
-        init();
-    };
+    VulkanWindow(int w, int h): WIDTH(w), HEIGHT(h) {};
     ~VulkanWindow();
     VulkanWindow(const VulkanWindow& other) = delete;
     VulkanWindow& operator=(const VulkanWindow& other) = delete;

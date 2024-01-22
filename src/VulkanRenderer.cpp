@@ -6,8 +6,8 @@
 #include "utils.h"
 namespace vkcpp{
 
-void VulkanRenderer::init(VulkanWindow& vkcppWindow){
-    vkcppSwapChain.init(vkcppWindow);
+void VulkanRenderer::init(){
+    vkcppSwapChain.init();
     createDescriptorSetLayout(vkcppResource.getDevice());
     vkcppPipeline.createPipeline(vkcppResource.getDevice().getLogicalDevice(), vkcppSwapChain, descriptorSetLayout);
     

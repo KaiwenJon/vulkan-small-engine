@@ -28,70 +28,72 @@ void vkcpp::VulkanDescriptorManager::createLayout(){
     }
 }
 
-void VulkanDescriptorManager::createPool(int numFrames){
+void VulkanDescriptorManager::createPool(int uboCnt, int texCnt, int maxSets){
     std::array<VkDescriptorPoolSize, 2> poolSizes{};
     poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    poolSizes[0].descriptorCount = static_cast<uint32_t>(numFrames);
+    poolSizes[0].descriptorCount = static_cast<uint32_t>(uboCnt);
     poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-    poolSizes[1].descriptorCount = static_cast<uint32_t>(numFrames);
+    poolSizes[1].descriptorCount = static_cast<uint32_t>(texCnt);
 
     VkDescriptorPoolCreateInfo poolInfo{};
     poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
     poolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
     poolInfo.pPoolSizes = poolSizes.data();
-    poolInfo.maxSets = static_cast<uint32_t>(numFrames);
+    poolInfo.maxSets = static_cast<uint32_t>(maxSets);
 
     if (vkCreateDescriptorPool(vkcppDevice.getLogicalDevice(), &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
         throw std::runtime_error("failed to create descriptor pool!");
     }
 }
 
-template <typename T>
-void VulkanDescriptorManager::createDescriptorSetsUniform(int numFrames, VulkanUniformBuffer& vkcppUniformBuffer)
-{
-    std::vector<VkDescriptorSetLayout> layouts(numFrames, descriptorSetLayout);
+void VulkanDescriptorManager::createSameDescriptorSets(int numSets){
+    std::vector<VkDescriptorSetLayout> layouts(numSets, descriptorSetLayout);
     VkDescriptorSetAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
     allocInfo.descriptorPool = descriptorPool;
-    allocInfo.descriptorSetCount = static_cast<uint32_t>(numFrames);
+    allocInfo.descriptorSetCount = static_cast<uint32_t>(numSets);
     allocInfo.pSetLayouts = layouts.data();
 
-    descriptorSets.resize(numFrames);
+    descriptorSets.resize(numSets);
     if (vkAllocateDescriptorSets(vkcppDevice.getLogicalDevice(), &allocInfo, descriptorSets.data()) != VK_SUCCESS) {
         throw std::runtime_error("failed to allocate descriptor sets!");
     }
+}
 
-    for (size_t i = 0; i < numFrames; i++) {
-        VkDescriptorBufferInfo bufferInfo{};
-        bufferInfo.buffer = uniformBuffers[i];
-        bufferInfo.offset = 0;
-        bufferInfo.range = sizeof(UniformBufferObject);
+void VulkanDescriptorManager::bindTexture(VulkanTexture &vkcppTexture, int setIdx, int binding){
+    VkDescriptorImageInfo imageInfo{};
+    imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    imageInfo.imageView = vkcppTexture.getTextureImageView();
+    imageInfo.sampler = vkcppTexture.getTextureSampler();
 
-        VkDescriptorImageInfo imageInfo{};
-        imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-        imageInfo.imageView = textureImageView;
-        imageInfo.sampler = textureSampler;
+    std::vector<VkWriteDescriptorSet> descriptorWrites(1);
+    descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+    descriptorWrites[0].dstSet = descriptorSets[setIdx];
+    descriptorWrites[0].dstBinding = binding;
+    descriptorWrites[0].dstArrayElement = 0;
+    descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    descriptorWrites[0].descriptorCount = 1;
+    descriptorWrites[0].pImageInfo = &imageInfo;
+    vkUpdateDescriptorSets(vkcppDevice.getLogicalDevice(), static_cast<uint32_t>(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
+    
+}
 
-        std::array<VkWriteDescriptorSet, 2> descriptorWrites{};
-
-        descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        descriptorWrites[0].dstSet = descriptorSets[i];
-        descriptorWrites[0].dstBinding = 0;
-        descriptorWrites[0].dstArrayElement = 0;
-        descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        descriptorWrites[0].descriptorCount = 1;
-        descriptorWrites[0].pBufferInfo = &bufferInfo;
-
-        descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        descriptorWrites[1].dstSet = descriptorSets[i];
-        descriptorWrites[1].dstBinding = 1;
-        descriptorWrites[1].dstArrayElement = 0;
-        descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        descriptorWrites[1].descriptorCount = 1;
-        descriptorWrites[1].pImageInfo = &imageInfo;
-
-        vkUpdateDescriptorSets(vkcppDevice.getLogicalDevice(), static_cast<uint32_t>(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
-    }
+template <typename T>
+void VulkanDescriptorManager::bindUniform(VulkanUniformBuffer& vkcppUniformBuffer, int setIdx, int binding)
+{
+    VkDescriptorBufferInfo bufferInfo{};
+    bufferInfo.buffer = vkcppUniformBuffer.getBuffer();
+    bufferInfo.offset = 0;
+    bufferInfo.range = sizeof(T);
+    std::vector<VkWriteDescriptorSet> descriptorWrites(1);
+    descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+    descriptorWrites[0].dstSet = descriptorSets[setIdx];
+    descriptorWrites[0].dstBinding = binding;
+    descriptorWrites[0].dstArrayElement = 0;
+    descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    descriptorWrites[0].descriptorCount = 1;
+    descriptorWrites[0].pBufferInfo = &bufferInfo;
+    vkUpdateDescriptorSets(vkcppDevice.getLogicalDevice(), static_cast<uint32_t>(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
 }
 
 

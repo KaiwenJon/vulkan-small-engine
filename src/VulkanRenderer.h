@@ -24,7 +24,7 @@ public:
     vkcppResource(vkcppResource),
     vkcppSwapChain(vkcppResource.getDevice(), window),
     vkcppCmdManager(vkcppResource.getCmdManager()),
-    vkcppTextureManager(vkcppResource.getDevice()),
+    vkcppTexture(vkcppResource.getDevice()),
     vkcppDescriptorManager(vkcppResource.getDevice())
     {}
     ;
@@ -42,7 +42,7 @@ private:
 
     // Renderer's resources
     VulkanSwapChain vkcppSwapChain;
-    VulkanTexture vkcppTextureManager;
+    VulkanTexture vkcppTexture;
     VulkanPipeline vkcppPipeline;
     VulkanDescriptorManager vkcppDescriptorManager;
 }

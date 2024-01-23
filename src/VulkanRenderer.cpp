@@ -10,7 +10,7 @@ void VulkanRenderer::init(){
     vkcppSwapChain.init();
     vkcppDescriptorManager.createLayout();
     vkcppPipeline.createPipeline(vkcppResource.getDevice().getLogicalDevice(), vkcppSwapChain, vkcppDescriptorManager.getLayout());
-    
+    vkcppTexture.createTexture(vkcppCmdManager, "../resources/viking_rooom.png");
 }
 
 void VulkanRenderer::drawFrame(){

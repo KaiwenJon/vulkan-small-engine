@@ -16,7 +16,7 @@ public:
     VulkanCommandManager& operator=(const VulkanCommandManager& other) = delete;
 
     void init();
-    void createCommandBuffersRender(int num);
+    void createCommandBuffersRender(int numFrames);
     VkCommandBuffer beginSingleTimeCommands();
     void endSingleTimeCommands(VkCommandBuffer commandBuffer);
 

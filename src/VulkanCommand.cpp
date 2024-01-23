@@ -15,8 +15,8 @@ void VulkanCommandManager::init(){
     }
 }
 
-void VulkanCommandManager::createCommandBuffersRender(int num) {
-    commandBuffers.resize(num);
+void VulkanCommandManager::createCommandBuffersRender(int numFrames) {
+    commandBuffers.resize(numFrames);
 
     VkCommandBufferAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;

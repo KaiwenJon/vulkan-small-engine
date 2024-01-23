@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include "VulkanDevice.h"
 #include "VulkanUniformBuffer.h"
-#include "VulkanTextureManager.h"
+#include "VulkanTexture.h"
 
 namespace vkcpp{
 
@@ -17,11 +17,11 @@ public:
     VulkanDescriptorManager& operator=(const VulkanDescriptorManager& other) = delete;
 
     void createLayout();
-    void createPool(int numFrames);
-
+    void createPool(int uboCnt, int texCnt, int maxSets);
+    void createSameDescriptorSets(int numSets);
     template<typename T>
-    void createDescriptorSetsUniform(int numFrames, VulkanUniformBuffer& vkcppUniformBuffer);
-    void createDescriptorSetsTexture(VulkanTexture& vkcppTextureManager);
+    void bindUniform(VulkanUniformBuffer& vkcppUniformBuffer, int setIdx, int binding);
+    void bindTexture(VulkanTexture& vkcppTexture, int setIdx, int binding);
     VkDescriptorSetLayout getLayout(){return descriptorSetLayout;}
 
 private:

@@ -93,14 +93,16 @@ void VulkanModel::loadModel(VulkanCommandManager &vkcppCmdManager, const std::st
     VkDeviceSize bufferSizeVertex = sizeof(vertices[0]) * vertices.size();
 
     VulkanBuffer vkcppStagingBufferVertex(vkcppDevice);
-    vkcppStagingBufferVertex.create(vertices.data(), bufferSizeVertex, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    vkcppStagingBufferVertex.create(vertices.data(), bufferSizeVertex, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+    vkcppVertexBuffer.prepare(bufferSizeVertex, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     vkcppStagingBufferVertex.copyBufferTo(vkcppCmdManager, vkcppVertexBuffer.getBuffer(), bufferSizeVertex);
     // vkcppStagingBufferVertex.destroy();
 
     // create index buffer
     VkDeviceSize bufferSizeIndex = sizeof(indices[0]) * indices.size();
     VulkanBuffer vkcppStagingBufferIndex(vkcppDevice);
-    vkcppStagingBufferIndex.create(indices.data(), bufferSizeIndex, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    vkcppStagingBufferIndex.create(indices.data(), bufferSizeIndex, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+    vkcppIndexBuffer.prepare(bufferSizeIndex, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     vkcppStagingBufferIndex.copyBufferTo(vkcppCmdManager, vkcppIndexBuffer.getBuffer(), bufferSizeIndex);
     // vkcppStagingBufferIndex.destroy();
 }

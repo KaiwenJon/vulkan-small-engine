@@ -24,8 +24,16 @@ public:
         other.bufferMemory = VK_NULL_HANDLE;
         other.bufferSize = 0;
     }
+    // createBuffer and copy memory
     void create(
         void *hostData, 
+        VkDeviceSize size, 
+        VkBufferUsageFlags usage, 
+        VkMemoryPropertyFlags properties
+    );
+
+    // createBuffer but don't copy memory
+    void prepare(
         VkDeviceSize size, 
         VkBufferUsageFlags usage, 
         VkMemoryPropertyFlags properties

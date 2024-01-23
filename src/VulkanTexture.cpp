@@ -20,6 +20,7 @@ void VulkanTexture::createTexture(VulkanCommandManager& vkcppCmdManager, const s
     VkDevice device = vkcppDevice.getLogicalDevice();
     VkPhysicalDevice physicalDevice = vkcppDevice.getPhysicalDevice();
     int texWidth, texHeight, texChannels;
+    std::cout<<texture_path<<std::endl;
     stbi_uc* pixels = stbi_load(texture_path.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
     VkDeviceSize imageSize = texWidth * texHeight * 4;
     mipLevels = static_cast<uint32_t>(std::floor(std::log2(std::max(texWidth, texHeight)))) + 1;

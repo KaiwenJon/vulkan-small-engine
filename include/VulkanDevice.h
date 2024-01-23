@@ -23,10 +23,10 @@ public:
 
 private:
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-    VkDevice device;
-    VkSurfaceKHR surface;
-    VkQueue graphicsQueue;
-    VkQueue presentQueue;
+    VkDevice device = VK_NULL_HANDLE;
+    VkSurfaceKHR surface = VK_NULL_HANDLE;
+    VkQueue graphicsQueue = VK_NULL_HANDLE;
+    VkQueue presentQueue = VK_NULL_HANDLE;
     QueueFamilyIndices indices;
     void pickPhysicalDevice(VkInstance instance);
     void createLogicalDevice(VulkanDebugger& vkcppDebugger);

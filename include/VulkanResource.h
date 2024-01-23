@@ -23,7 +23,7 @@ namespace vkcpp
         VulkanCommandManager& getCmdManager(){return vkcppCmdManager;}
     private:
         void createInstance();
-        VkInstance instance;
+        VkInstance instance = VK_NULL_HANDLE;
         VulkanDebugger vkcppDebugger{instance};
         VulkanDevice vkcppDevice;
         VulkanCommandManager vkcppCmdManager{vkcppDevice};

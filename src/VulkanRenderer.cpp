@@ -30,8 +30,8 @@ void VulkanRenderer::init(GLFWwindow* window)
     vkcppSwapChain.init(window);
     vkcppDescriptorManager.createLayout();
     vkcppPipeline.createPipeline(vkcppSwapChain, vkcppDescriptorManager.getLayout());
-    vkcppTexture.createTexture(vkcppCmdManager, "../resources/viking_rooom.png");
-    vkcppModel.loadModel(vkcppCmdManager, "../resources/viking_rooom.obj");
+    vkcppTexture.createTexture(vkcppCmdManager, "./resources/viking_room.png");
+    vkcppModel.loadModel(vkcppCmdManager, "./resources/viking_room.obj");
     initResourcesAllFrames();
 }
 

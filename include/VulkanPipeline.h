@@ -20,8 +20,8 @@ public:
     VkPipeline getGraphicsPipeline(){return graphicsPipeline;}
 private:
     VulkanDevice& vkcppDevice;
-    VkPipelineLayout pipelineLayout;
-    VkPipeline graphicsPipeline;
+    VkPipelineLayout pipelineLayout = VK_NULL_HANDLE;
+    VkPipeline graphicsPipeline = VK_NULL_HANDLE;
 }
 ;
 }

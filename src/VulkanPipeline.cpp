@@ -12,8 +12,8 @@ VulkanPipeline::~VulkanPipeline()
 
 void VulkanPipeline::createPipeline(VulkanSwapChain& vkcppSwapChain, VkDescriptorSetLayout descriptorSetLayout){
     VkDevice device = vkcppDevice.getLogicalDevice();
-    auto vertShaderCode = readFile("shaders/vert.spv");
-    auto fragShaderCode = readFile("shaders/frag.spv");
+    auto vertShaderCode = readFile("./shader/vert.spv");
+    auto fragShaderCode = readFile("./shader/frag.spv");
 
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode, device);
     VkShaderModule fragShaderModule = createShaderModule(fragShaderCode, device);

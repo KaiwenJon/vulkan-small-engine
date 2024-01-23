@@ -19,6 +19,9 @@ public:
         imageAvailableSemaphore = other.imageAvailableSemaphore;
         renderFinishedSemaphore = other.renderFinishedSemaphore;
         inFlightFence = other.inFlightFence;
+        other.imageAvailableSemaphore = VK_NULL_HANDLE;
+        other.renderFinishedSemaphore = VK_NULL_HANDLE;
+        other.inFlightFence = VK_NULL_HANDLE;
     }
 
     void create();

@@ -28,8 +28,8 @@ void VulkanResource::init(){
 }
 
 VulkanResource::~VulkanResource(){
-    vkDestroySurfaceKHR(instance, vkcppDevice.getSurface(), nullptr);
-    vkDestroyInstance(instance, nullptr);
+    if(vkcppDevice.getSurface()!=VK_NULL_HANDLE) vkDestroySurfaceKHR(instance, vkcppDevice.getSurface(), nullptr);
+    if(instance!=VK_NULL_HANDLE) vkDestroyInstance(instance, nullptr);
 }
 
 void VulkanResource::createInstance(){

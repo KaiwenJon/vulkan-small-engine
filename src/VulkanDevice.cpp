@@ -15,7 +15,7 @@ namespace vkcpp{
 
 VulkanDevice::~VulkanDevice()
 {
-    vkDestroyDevice(device, nullptr);
+    if(device!=VK_NULL_HANDLE) vkDestroyDevice(device, nullptr);
 }
 
 

@@ -7,9 +7,9 @@ namespace vkcpp{
 VulkanSyncObj::~VulkanSyncObj()
 {
     VkDevice device = vkcppDevice.getLogicalDevice();
-    vkDestroySemaphore(device, renderFinishedSemaphore, nullptr);
-    vkDestroySemaphore(device, imageAvailableSemaphore, nullptr);
-    vkDestroyFence(device, inFlightFence, nullptr);
+    if(renderFinishedSemaphore != VK_NULL_HANDLE) vkDestroySemaphore(device, renderFinishedSemaphore, nullptr);
+    if(imageAvailableSemaphore != VK_NULL_HANDLE) vkDestroySemaphore(device, imageAvailableSemaphore, nullptr);
+    if(inFlightFence != VK_NULL_HANDLE) vkDestroyFence(device, inFlightFence, nullptr);
 }
 
 void vkcpp::VulkanSyncObj::create(){

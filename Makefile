@@ -2,34 +2,34 @@
 CC = g++
 
 # Directories
+CC = g++
 SRC_DIR = src
-INC_DIR = include
+INCLUDE_DIR = include
 BUILD_DIR = build
-OUTPUT = vkcppApp
 
-# Source files
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
+SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
 
-# Object files
-OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
-
-# Compiler flags
-CFLAGS = -std=c++17 -O2 -I$(INC_DIR)
-
-# Linker flags
+CXXFLAGS = -std=c++17 -O2 -I$(INCLUDE_DIR) -g
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
-# Targets
-all: $(OUTPUT)
+TARGET = vkcppApp
 
-$(OUTPUT): $(OBJS)
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+all: $(BUILD_DIR) $(TARGET)
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CXXFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJS)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+.PHONY: clean run
 
 clean:
-	rm -rf $(BUILD_DIR) $(OUTPUT)
+	rm -rf $(BUILD_DIR) $(TARGET)
 
-.PHONY: all clean
+run: $(TARGET)
+	./$(TARGET)

@@ -14,6 +14,7 @@ public:
     VulkanUniformBuffer& operator=(const VulkanUniformBuffer& other) = delete;
     VulkanUniformBuffer(VulkanUniformBuffer&& other) : VulkanBuffer(std::move(other)) {
         uniformBufferMapped = other.uniformBufferMapped;
+        other.uniformBufferMapped = nullptr;
     }
 
 

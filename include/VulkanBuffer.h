@@ -20,7 +20,9 @@ public:
         buffer = other.buffer;
         bufferMemory = other.bufferMemory;
         bufferSize = other.bufferSize;
-        // actually we're moving handle, so no need to clear other.
+        other.buffer = VK_NULL_HANDLE;
+        other.bufferMemory = VK_NULL_HANDLE;
+        other.bufferSize = 0;
     }
     void create(
         void *hostData, 

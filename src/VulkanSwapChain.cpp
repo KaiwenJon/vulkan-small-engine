@@ -10,7 +10,7 @@ VulkanSwapChain::~VulkanSwapChain()
 {
     cleanup();
     VkDevice device = vkcppDevice.getLogicalDevice();
-    vkDestroyRenderPass(device, renderPass, nullptr);
+    if(renderPass!=VK_NULL_HANDLE) vkDestroyRenderPass(device, renderPass, nullptr);
 }
 
 void VulkanSwapChain::init(){
@@ -240,22 +240,22 @@ void VulkanSwapChain::createFramebuffers() {
 
 void VulkanSwapChain::cleanup(){
     VkDevice device = vkcppDevice.getLogicalDevice();
-    vkDestroyImageView(device, depthImageView, nullptr);
-    vkDestroyImage(device, depthImage, nullptr);
-    vkFreeMemory(device, depthImageMemory, nullptr);
+    if(depthImageView!=VK_NULL_HANDLE) vkDestroyImageView(device, depthImageView, nullptr);
+    if(depthImage!=VK_NULL_HANDLE) vkDestroyImage(device, depthImage, nullptr);
+    if(depthImageMemory!=VK_NULL_HANDLE) vkFreeMemory(device, depthImageMemory, nullptr);
 
-    vkDestroyImageView(device, colorImageView, nullptr);
-    vkDestroyImage(device, colorImage, nullptr);
-    vkFreeMemory(device, colorImageMemory, nullptr);
+    if(colorImageView!=VK_NULL_HANDLE) vkDestroyImageView(device, colorImageView, nullptr);
+    if(colorImage!=VK_NULL_HANDLE) vkDestroyImage(device, colorImage, nullptr);
+    if(colorImageMemory!=VK_NULL_HANDLE) vkFreeMemory(device, colorImageMemory, nullptr);
 
     for (auto framebuffer : swapChainFramebuffers) {
-        vkDestroyFramebuffer(device, framebuffer, nullptr);
+        if(framebuffer!=VK_NULL_HANDLE) vkDestroyFramebuffer(device, framebuffer, nullptr);
     }
 
     for (auto imageView : swapChainImageViews) {
-        vkDestroyImageView(device, imageView, nullptr);
+        if(imageView!=VK_NULL_HANDLE) vkDestroyImageView(device, imageView, nullptr);
     }
 
-    vkDestroySwapchainKHR(device, swapChain, nullptr);
+    if(swapChain!=VK_NULL_HANDLE) vkDestroySwapchainKHR(device, swapChain, nullptr);
 }
 }

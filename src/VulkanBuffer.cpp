@@ -6,8 +6,8 @@ namespace vkcpp{
 VulkanBuffer::~VulkanBuffer()
 {
     VkDevice device = vkcppDevice.getLogicalDevice();
-    vkDestroyBuffer(device, buffer, nullptr);
-    vkFreeMemory(device, bufferMemory, nullptr);
+    if(buffer != VK_NULL_HANDLE) vkDestroyBuffer(device, buffer, nullptr);
+    if(bufferMemory != VK_NULL_HANDLE) vkFreeMemory(device, bufferMemory, nullptr);
 }
 
 void VulkanBuffer::create(void* hostData, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties){

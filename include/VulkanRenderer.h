@@ -42,6 +42,7 @@ public:
             vkcppSyncObjs.emplace_back(vkcppResource.getDevice());
             vkcppUniformBuffers.emplace_back(vkcppResource.getDevice());
         }
+        
     }
     ;
     ~VulkanRenderer();

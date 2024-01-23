@@ -4,8 +4,8 @@ namespace vkcpp{
 VulkanDescriptorManager::~VulkanDescriptorManager()
 {
     VkDevice device = vkcppDevice.getLogicalDevice();
-    vkDestroyDescriptorPool(device, descriptorPool, nullptr);
-    vkDestroyDescriptorSetLayout(device, descriptorSetLayout, nullptr);
+    if(descriptorPool!=VK_NULL_HANDLE) vkDestroyDescriptorPool(device, descriptorPool, nullptr);
+    if(descriptorSetLayout!=VK_NULL_HANDLE) vkDestroyDescriptorSetLayout(device, descriptorSetLayout, nullptr);
 }
 
 void vkcpp::VulkanDescriptorManager::createLayout(){

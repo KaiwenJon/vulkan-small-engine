@@ -12,10 +12,11 @@ namespace vkcpp{
 
 void VulkanApp::run(){
     vkcppWindow.init();
-    vkcppResource.init();
-    vkcppRenderer.init();
+    GLFWwindow* window = vkcppWindow.getGLFWwindow();
+    vkcppResource.init(window);// need to received the updated window
+    vkcppRenderer.init(window);// need to received the updated window
 
-    vkcppRenderer.loop();
+    vkcppRenderer.loop(window);
 }
 
 }

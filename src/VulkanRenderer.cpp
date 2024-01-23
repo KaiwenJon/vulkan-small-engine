@@ -25,9 +25,9 @@ VulkanRenderer::~VulkanRenderer()
 {
 }
 
-void VulkanRenderer::init()
+void VulkanRenderer::init(GLFWwindow* window)
 {
-    vkcppSwapChain.init();
+    vkcppSwapChain.init(window);
     vkcppDescriptorManager.createLayout();
     vkcppPipeline.createPipeline(vkcppSwapChain, vkcppDescriptorManager.getLayout());
     vkcppTexture.createTexture(vkcppCmdManager, "../resources/viking_rooom.png");
@@ -35,7 +35,7 @@ void VulkanRenderer::init()
     initResourcesAllFrames();
 }
 
-void VulkanRenderer::loop(){
+void VulkanRenderer::loop(GLFWwindow* window){
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         drawFrame();
@@ -101,8 +101,8 @@ void VulkanRenderer::drawFrame(){
         vkcppSyncObjs[cur_resource_idx]
     );
 
-    if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
-        framebufferResized = false;
+    if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || frameBufferResizedRef) {
+        frameBufferResizedRef = false;
         vkcppSwapChain.recreate();
     } else if (result != VK_SUCCESS) {
         throw std::runtime_error("failed to present swap chain image!");

@@ -18,8 +18,8 @@ public:
 
 private:
     VulkanWindow vkcppWindow{800, 600};
-    VulkanResource vkcppResource{vkcppWindow.getGLFWwindow()};
-    VulkanRenderer vkcppRenderer{vkcppResource, vkcppWindow};
+    VulkanResource vkcppResource;
+    VulkanRenderer vkcppRenderer{vkcppResource, vkcppWindow.framebufferResized};
 };
 }
 

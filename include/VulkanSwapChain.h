@@ -10,16 +10,15 @@ namespace vkcpp{
 class VulkanDevice;
 class VulkanSwapChain{
 public:
-    VulkanSwapChain(VulkanDevice& vkcppDevice, GLFWwindow* window)
+    VulkanSwapChain(VulkanDevice& vkcppDevice)
     :
-    vkcppDevice(vkcppDevice),
-    window(window)
+    vkcppDevice(vkcppDevice)
     {};
     ~VulkanSwapChain();
     VulkanSwapChain(const VulkanSwapChain& other) = delete;
     VulkanSwapChain& operator=(const VulkanSwapChain& other) = delete;
 
-    void init();
+    void init(GLFWwindow* window);
     void recreate();
     VkResult getNextImageIdx(VkSemaphore imageAvailableSemaphore, uint32_t& imageIndex);
     void present();
@@ -37,7 +36,7 @@ private:
     void createFramebuffers();
     void cleanup();
     
-    GLFWwindow* window;
+    GLFWwindow* window; // created window, received when init
     VulkanDevice& vkcppDevice;
 
     VkSwapchainKHR swapChain;

@@ -20,14 +20,19 @@ std::vector<const char*> getRequiredExtensions(bool enableValidationLayers) {
     return extensions;
 }
 
-void VulkanResource::init(){
+void VulkanResource::init(GLFWwindow* window){
     createInstance();
     vkcppDebugger.setup(instance);
     vkcppDevice.setup(instance, vkcppDebugger, window);
     vkcppCmdManager.init();
 }
 
-VulkanResource::~VulkanResource(){
+VulkanResource::VulkanResource()
+{
+}
+
+VulkanResource::~VulkanResource()
+{
     if(vkcppDevice.getSurface()!=VK_NULL_HANDLE) vkDestroySurfaceKHR(instance, vkcppDevice.getSurface(), nullptr);
     if(instance!=VK_NULL_HANDLE) vkDestroyInstance(instance, nullptr);
 }

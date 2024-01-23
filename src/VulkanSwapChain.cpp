@@ -13,7 +13,8 @@ VulkanSwapChain::~VulkanSwapChain()
     if(renderPass!=VK_NULL_HANDLE) vkDestroyRenderPass(device, renderPass, nullptr);
 }
 
-void VulkanSwapChain::init(){
+void VulkanSwapChain::init(GLFWwindow* window){
+    this->window = window;
     createSwapChain();
     createImageViews();
     createRenderPass();

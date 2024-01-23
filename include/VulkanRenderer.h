@@ -21,13 +21,12 @@ namespace vkcpp{
 class VulkanCommandManager;
 class VulkanRenderer{
 public:
-    VulkanRenderer(VulkanResource& vkcppResource, VulkanWindow& vkcppWindow)
+    VulkanRenderer(VulkanResource& vkcppResource, bool& frameBufferResizedRef)
     :
-    window(vkcppWindow.getGLFWwindow()),
-    framebufferResized(vkcppWindow.framebufferResized),
+    frameBufferResizedRef(frameBufferResizedRef),
     vkcppResource(vkcppResource),
     vkcppCmdManager(vkcppResource.getCmdManager()),
-    vkcppSwapChain(vkcppResource.getDevice(), window),
+    vkcppSwapChain(vkcppResource.getDevice()),
     vkcppTexture(vkcppResource.getDevice()),
     vkcppPipeline(vkcppResource.getDevice()),
     vkcppDescriptorManager(vkcppResource.getDevice()),
@@ -49,15 +48,14 @@ public:
     VulkanRenderer(const VulkanRenderer& other) = delete;
     VulkanRenderer& operator=(const VulkanRenderer& other) = delete;
 
-    void init();
-    void loop();
+    void init(GLFWwindow* window);
+    void loop(GLFWwindow* window);
     void drawFrame();
 private:
     // resources from others
-    GLFWwindow* window;
     VulkanResource& vkcppResource;
     VulkanCommandManager& vkcppCmdManager;
-    bool& framebufferResized;
+    bool& frameBufferResizedRef;
 
     // Renderer's resources
     VulkanSwapChain vkcppSwapChain;

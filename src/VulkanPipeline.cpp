@@ -6,8 +6,8 @@ namespace vkcpp{
 VulkanPipeline::~VulkanPipeline()
 {
     VkDevice device = vkcppDevice.getLogicalDevice();
-    vkDestroyPipeline(device, graphicsPipeline, nullptr);
-    vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+    if(graphicsPipeline!=VK_NULL_HANDLE) vkDestroyPipeline(device, graphicsPipeline, nullptr);
+    if(pipelineLayout!=VK_NULL_HANDLE) vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
 }
 
 void VulkanPipeline::createPipeline(VulkanSwapChain& vkcppSwapChain, VkDescriptorSetLayout descriptorSetLayout){

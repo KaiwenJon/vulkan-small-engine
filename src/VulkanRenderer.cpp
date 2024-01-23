@@ -33,6 +33,7 @@ void VulkanRenderer::init(GLFWwindow* window)
     vkcppTexture.createTexture(vkcppCmdManager, "./resources/viking_room.png");
     vkcppModel.loadModel(vkcppCmdManager, "./resources/viking_room.obj");
     initResourcesAllFrames();
+    vkcppCmdManager.createCommandBuffersRender(numFrames);
 }
 
 void VulkanRenderer::loop(GLFWwindow* window){

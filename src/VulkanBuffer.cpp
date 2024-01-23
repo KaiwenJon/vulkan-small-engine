@@ -53,6 +53,7 @@ void VulkanBuffer::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkM
     }
 
     vkBindBufferMemory(device, buffer, bufferMemory, 0);
+    bufferSize = size;
 }
 
 void VulkanBuffer::copyBufferTo(VulkanCommandManager& vkcppCmdManager, VkBuffer dstBuffer, VkDeviceSize size) {

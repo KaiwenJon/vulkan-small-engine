@@ -1,5 +1,6 @@
 #include "VulkanImageUtils.h"
-
+#include "VulkanCommand.h"
+#include "VulkanDevice.h"
 #include <stdexcept>
 
 namespace vkcpp{

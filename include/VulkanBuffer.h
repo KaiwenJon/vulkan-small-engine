@@ -44,7 +44,7 @@ protected:
     VulkanDevice& vkcppDevice;
     VkBuffer buffer;
     VkDeviceMemory bufferMemory;
-
+    VkDeviceSize bufferSize;
 }
 ;
 }

@@ -1,6 +1,11 @@
 #ifndef VULKANSWAPCHAIN_H
 #define VULKANSWAPCHAIN_H
 
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+#include <vector>
+
+
 namespace vkcpp{
 class VulkanDevice;
 class VulkanSwapChain{
@@ -16,7 +21,7 @@ public:
 
     void init();
     void recreate();
-    uint32_t getNextImageIdx(VkSemaphore imageAvailableSemaphore);
+    VkResult getNextImageIdx(VkSemaphore imageAvailableSemaphore, uint32_t& imageIndex);
     void present();
     VkSwapchainKHR getSwapChain(){return swapChain;}
     VkRenderPass getRenderPass(){return renderPass;}

@@ -42,18 +42,17 @@ void VulkanSwapChain::recreate(){
     // if renderpass not compatible, need to recreate, then recreate pipeline.
 }
 
-uint32_t VulkanSwapChain::getNextImageIdx(VkSemaphore imageAvailableSemaphore)
+VkResult VulkanSwapChain::getNextImageIdx(VkSemaphore imageAvailableSemaphore, uint32_t& imageIndex)
 {
-    uint32_t imageIndex;
     VkResult result = vkAcquireNextImageKHR(vkcppDevice.getLogicalDevice(), swapChain, UINT64_MAX, imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR) {
         recreate();
-        return;
+        return result;
     } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
         throw std::runtime_error("failed to acquire swap chain image!");
     }
-    return imageIndex;
+    return result;
 }
 
 void VulkanSwapChain::createSwapChain(){

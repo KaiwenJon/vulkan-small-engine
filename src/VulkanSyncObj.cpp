@@ -1,4 +1,7 @@
 #include "VulkanSyncObj.h"
+#include "VulkanDevice.h"
+#include  <stdexcept>
+
 
 namespace vkcpp{
 VulkanSyncObj::~VulkanSyncObj()

@@ -7,6 +7,7 @@
 #include <memory>
 #include <vector>
 
+#include "VulkanResource.h"
 #include "VulkanWindow.h"
 #include "VulkanSwapChain.h"
 #include "VulkanPipeline.h"
@@ -17,7 +18,6 @@
 #include "VulkanUniformBuffer.h"
 
 namespace vkcpp{
-class VulkanResource;
 class VulkanCommandManager;
 class VulkanRenderer{
 public:
@@ -33,8 +33,8 @@ public:
     vkcppDescriptorManager(vkcppResource.getDevice()),
     vkcppModel(vkcppResource.getDevice()),
     
-    vkcppSyncObjs(numFrames, VulkanSyncObj(vkcppResource.getDevice())),
-    vkcppUniformBuffers(numFrames, VulkanUniformBuffer(vkcppResource.getDevice()))
+    vkcppSyncObjs(std::vector<VulkanSyncObj>(numFrames, VulkanSyncObj(vkcppResource.getDevice()))),
+    vkcppUniformBuffers(std::vector<VulkanUniformBuffer>(numFrames, VulkanUniformBuffer(vkcppResource.getDevice())))
     {}
     ;
     ~VulkanRenderer();

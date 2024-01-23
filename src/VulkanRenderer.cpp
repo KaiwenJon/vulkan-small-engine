@@ -11,6 +11,7 @@
 #include <chrono>
 #include "VulkanRenderer.h"
 #include "VulkanDevice.h"
+#include "VulkanResource.h"
 #include "utils.h"
 namespace vkcpp{
 
@@ -69,7 +70,9 @@ void VulkanRenderer::drawFrame(){
     VulkanDevice& vkcppDevice = vkcppResource.getDevice();
     vkcppSyncObjs[cur_resource_idx].waitFence();
 
-    uint32_t imageIndex = vkcppSwapChain.getNextImageIdx(vkcppSyncObjs[cur_resource_idx].imageAvailableSemaphore);
+    uint32_t imageIndex;
+    VkResult result = vkcppSwapChain.getNextImageIdx(vkcppSyncObjs[cur_resource_idx].imageAvailableSemaphore, imageIndex);
+    if(result == VK_ERROR_OUT_OF_DATE_KHR) return; // swapchain has been recreated.
 
     updateUniformBuffer(cur_resource_idx);
 
@@ -86,7 +89,7 @@ void VulkanRenderer::drawFrame(){
         vkcppDescriptorManager.getDescriptorSets()[cur_resource_idx]
     );
     
-    VkResult result = vkcppCmdManager.submitDrawAndPresent(
+    result = vkcppCmdManager.submitDrawAndPresent(
         cur_resource_idx,
         imageIndex,
         vkcppSwapChain, 

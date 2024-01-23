@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "VulkanDevice.h"
+#include "VulkanDebugger.h"
 #include "utils.h"
 namespace vkcpp{
 VulkanDevice::~VulkanDevice()

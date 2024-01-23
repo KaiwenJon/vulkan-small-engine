@@ -9,6 +9,10 @@
 #include "VulkanDebugger.h"
 #include "utils.h"
 namespace vkcpp{
+    VulkanDevice::VulkanDevice()
+    {
+    }
+
 VulkanDevice::~VulkanDevice()
 {
     vkDestroyDevice(device, nullptr);

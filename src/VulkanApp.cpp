@@ -2,6 +2,13 @@
 
 
 namespace vkcpp{
+    VulkanApp::VulkanApp()
+    {
+    }
+
+    VulkanApp::~VulkanApp()
+    {
+    }
 
 void VulkanApp::run(){
     vkcppWindow.init();

@@ -31,10 +31,10 @@ public:
     vkcppTexture(vkcppResource.getDevice()),
     vkcppPipeline(vkcppResource.getDevice()),
     vkcppDescriptorManager(vkcppResource.getDevice()),
-    vkcppModel(vkcppResource.getDevice()),
+    vkcppModel(vkcppResource.getDevice())
     
-    vkcppSyncObjs(std::vector<VulkanSyncObj>(numFrames, VulkanSyncObj(vkcppResource.getDevice()))),
-    vkcppUniformBuffers(std::vector<VulkanUniformBuffer>(numFrames, VulkanUniformBuffer(vkcppResource.getDevice())))
+    // vkcppSyncObjs(std::move(std::vector<VulkanSyncObj>(numFrames, VulkanSyncObj(vkcppResource.getDevice())))),
+    // vkcppUniformBuffers(std::move(std::vector<VulkanUniformBuffer>(numFrames, VulkanUniformBuffer(vkcppResource.getDevice()))))
     {}
     ;
     ~VulkanRenderer();

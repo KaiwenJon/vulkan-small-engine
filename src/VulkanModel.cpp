@@ -45,9 +45,12 @@ std::vector<VkVertexInputAttributeDescription> Vertex::getAttributeDescriptions(
     return attributeDescriptions;
 }
 
+VulkanModel::~VulkanModel()
+{
+}
 
-
-void VulkanModel::loadModel(VulkanCommandManager& vkcppCmdManager, const std::string& model_path){
+void VulkanModel::loadModel(VulkanCommandManager &vkcppCmdManager, const std::string &model_path)
+{
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
     std::vector<tinyobj::material_t> materials;
@@ -101,5 +104,4 @@ void VulkanModel::loadModel(VulkanCommandManager& vkcppCmdManager, const std::st
     vkcppStagingBufferIndex.copyBufferTo(vkcppCmdManager, vkcppIndexBuffer.getBuffer(), bufferSizeIndex);
     // vkcppStagingBufferIndex.destroy();
 }
-
 }

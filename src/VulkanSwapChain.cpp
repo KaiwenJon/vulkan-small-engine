@@ -109,7 +109,15 @@ void VulkanSwapChain::createSwapChain(){
     swapChainExtent = extent;
 }
 
+void VulkanSwapChain::VulkanSwapChain::createImageViews()
+{
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    swapChainImageViews.resize(swapChainImages.size());
 
+    for (uint32_t i = 0; i < swapChainImages.size(); i++) {
+        swapChainImageViews[i] = createImageView(device, swapChainImages[i], swapChainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, 1);
+    }
+}
 
 void VulkanSwapChain::createRenderPass() {
     VkDevice device = vkcppDevice.getLogicalDevice();

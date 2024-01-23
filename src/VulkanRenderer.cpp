@@ -21,7 +21,12 @@ struct UniformBufferObject {
     alignas(16) glm::mat4 proj;
 };
 
-void VulkanRenderer::init(){
+VulkanRenderer::~VulkanRenderer()
+{
+}
+
+void VulkanRenderer::init()
+{
     vkcppSwapChain.init();
     vkcppDescriptorManager.createLayout();
     vkcppPipeline.createPipeline(vkcppSwapChain, vkcppDescriptorManager.getLayout());

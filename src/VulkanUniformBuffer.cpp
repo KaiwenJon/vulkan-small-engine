@@ -1,7 +1,9 @@
 #include "VulkanUniformBuffer.h"
 
 namespace vkcpp{
-
+VulkanUniformBuffer::~VulkanUniformBuffer()
+{
+}
 
 void VulkanUniformBuffer::createUniformBuffer(VkDeviceSize size){
     createBuffer(

@@ -27,9 +27,10 @@ public:
     window(vkcppWindow.getGLFWwindow()),
     framebufferResized(vkcppWindow.framebufferResized),
     vkcppResource(vkcppResource),
-    vkcppSwapChain(vkcppResource.getDevice(), window),
     vkcppCmdManager(vkcppResource.getCmdManager()),
+    vkcppSwapChain(vkcppResource.getDevice(), window),
     vkcppTexture(vkcppResource.getDevice()),
+    vkcppPipeline(vkcppResource.getDevice()),
     vkcppDescriptorManager(vkcppResource.getDevice()),
     vkcppModel(vkcppResource.getDevice()),
     

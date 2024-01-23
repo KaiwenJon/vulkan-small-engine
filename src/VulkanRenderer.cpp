@@ -23,7 +23,7 @@ struct UniformBufferObject {
 void VulkanRenderer::init(){
     vkcppSwapChain.init();
     vkcppDescriptorManager.createLayout();
-    vkcppPipeline.createPipeline(vkcppResource.getDevice().getLogicalDevice(), vkcppSwapChain, vkcppDescriptorManager.getLayout());
+    vkcppPipeline.createPipeline(vkcppSwapChain, vkcppDescriptorManager.getLayout());
     vkcppTexture.createTexture(vkcppCmdManager, "../resources/viking_rooom.png");
     vkcppModel.loadModel(vkcppCmdManager, "../resources/viking_rooom.obj");
     initResourcesAllFrames();

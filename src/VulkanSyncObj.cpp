@@ -1,6 +1,13 @@
 #include "VulkanSyncObj.h"
 
 namespace vkcpp{
+VulkanSyncObj::~VulkanSyncObj()
+{
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    vkDestroySemaphore(device, renderFinishedSemaphore, nullptr);
+    vkDestroySemaphore(device, imageAvailableSemaphore, nullptr);
+    vkDestroyFence(device, inFlightFence, nullptr);
+}
 
 void vkcpp::VulkanSyncObj::create(){
     VkDevice device = vkcppDevice.getLogicalDevice();

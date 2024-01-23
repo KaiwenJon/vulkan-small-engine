@@ -5,20 +5,22 @@
 #include <GLFW/glfw3.h>
 
 #include "VulkanSwapChain.h"
+#include "VulkanDevice.h"
 
 namespace vkcpp{
 
 class VulkanPipeline{
 public:
-    VulkanPipeline();
+    VulkanPipeline(VulkanDevice& vkcppDevice) : vkcppDevice(vkcppDevice){};
     ~VulkanPipeline();
     VulkanPipeline(const VulkanPipeline& other) = delete;
     VulkanPipeline& operator=(const VulkanPipeline& other) = delete;
 
-    void createPipeline(VkDevice device, VulkanSwapChain& vkcppSwapChain, VkDescriptorSetLayout descriptorSetLayout);
+    void createPipeline(VulkanSwapChain& vkcppSwapChain, VkDescriptorSetLayout descriptorSetLayout);
     VkPipelineLayout getPipelineLayout(){return pipelineLayout;}
     VkPipeline getGraphicsPipeline(){return graphicsPipeline;}
 private:
+    VulkanDevice& vkcppDevice;
     VkPipelineLayout pipelineLayout;
     VkPipeline graphicsPipeline;
 }

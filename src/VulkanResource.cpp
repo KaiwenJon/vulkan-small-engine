@@ -13,6 +13,11 @@ void VulkanResource::init(){
     vkcppCmdManager.init();
 }
 
+VulkanResource::~VulkanResource(){
+    vkDestroySurfaceKHR(instance, vkcppDevice.getSurface(), nullptr);
+    vkDestroyInstance(instance, nullptr);
+}
+
 void VulkanResource::createInstance(){
     vkcppDebugger.checkValidationLayerSupport();
 

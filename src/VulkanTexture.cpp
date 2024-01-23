@@ -6,6 +6,15 @@
 #include "VulkanBuffer.h"
 
 namespace vkcpp{
+VulkanTexture::~VulkanTexture()
+{
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    vkDestroySampler(device, textureSampler, nullptr);
+    vkDestroyImageView(device, textureImageView, nullptr);
+    vkDestroyImage(device, textureImage, nullptr);
+    vkFreeMemory(device, textureImageMemory, nullptr);
+
+}
 
 void VulkanTexture::createTexture(VulkanCommandManager& vkcppCmdManager, const std::string& texture_path) {
     VkDevice device = vkcppDevice.getLogicalDevice();
@@ -35,7 +44,7 @@ void VulkanTexture::createTexture(VulkanCommandManager& vkcppCmdManager, const s
     copyBufferToImage(vkcppCmdManager, vkcppStagingBuffer.getBuffer(), textureImage, static_cast<uint32_t>(texWidth), static_cast<uint32_t>(texHeight));
     //transitioned to VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL while generating mipmaps
 
-    vkcppStagingBuffer.destroy();
+    // vkcppStagingBuffer.destroy(); // avoid double destroy
     generateMipmaps(vkcppCmdManager, physicalDevice, textureImage, VK_FORMAT_R8G8B8A8_SRGB, texWidth, texHeight, mipLevels);
 
     // createTextureImageView

@@ -1,6 +1,12 @@
 #include "VulkanDescriptorManager.h"
 
 namespace vkcpp{
+VulkanDescriptorManager::~VulkanDescriptorManager()
+{
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    vkDestroyDescriptorPool(device, descriptorPool, nullptr);
+    vkDestroyDescriptorSetLayout(device, descriptorSetLayout, nullptr);
+}
 
 void vkcpp::VulkanDescriptorManager::createLayout(){
     VkDescriptorSetLayoutBinding uboLayoutBinding{};

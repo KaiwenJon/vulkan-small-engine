@@ -8,6 +8,11 @@
 #include "VulkanDevice.h"
 #include "utils.h"
 namespace vkcpp{
+VulkanDevice::~VulkanDevice()
+{
+    vkDestroyDevice(device, nullptr);
+}
+
 
 
 void VulkanDevice::setup(VkInstance instance, VulkanDebugger& vkcppDebugger, GLFWwindow* window){

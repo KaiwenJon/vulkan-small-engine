@@ -3,8 +3,15 @@
 #include "VulkanModel.h"
 
 namespace vkcpp{
+VulkanPipeline::~VulkanPipeline()
+{
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    vkDestroyPipeline(device, graphicsPipeline, nullptr);
+    vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+}
 
-void VulkanPipeline::createPipeline(VkDevice device, VulkanSwapChain& vkcppSwapChain, VkDescriptorSetLayout descriptorSetLayout){
+void VulkanPipeline::createPipeline(VulkanSwapChain& vkcppSwapChain, VkDescriptorSetLayout descriptorSetLayout){
+    VkDevice device = vkcppDevice.getLogicalDevice();
     auto vertShaderCode = readFile("shaders/vert.spv");
     auto fragShaderCode = readFile("shaders/frag.spv");
 

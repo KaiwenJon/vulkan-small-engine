@@ -3,6 +3,12 @@
 #include <cstring>
 
 namespace vkcpp{
+VulkanBuffer::~VulkanBuffer()
+{
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    vkDestroyBuffer(device, buffer, nullptr);
+    vkFreeMemory(device, bufferMemory, nullptr);
+}
 
 void VulkanBuffer::create(void* hostData, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties){
     VkDevice device = vkcppDevice.getLogicalDevice();
@@ -14,11 +20,11 @@ void VulkanBuffer::create(void* hostData, VkDeviceSize size, VkBufferUsageFlags 
 }
 
 
-void VulkanBuffer::destroy(){
-    VkDevice device = vkcppDevice.getLogicalDevice();
-    vkDestroyBuffer(device, buffer, nullptr);
-    vkFreeMemory(device, bufferMemory, nullptr);
-}
+// void VulkanBuffer::destroy(){
+//     VkDevice device = vkcppDevice.getLogicalDevice();
+//     vkDestroyBuffer(device, buffer, nullptr);
+//     vkFreeMemory(device, bufferMemory, nullptr);
+// }
 
 
 void VulkanBuffer::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory) {

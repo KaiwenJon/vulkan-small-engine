@@ -25,7 +25,7 @@ namespace vkcpp
         void createInstance();
         GLFWwindow *window;
         VkInstance instance;
-        VulkanDebugger vkcppDebugger;
+        VulkanDebugger vkcppDebugger{instance};
         VulkanDevice vkcppDevice;
         VulkanCommandManager vkcppCmdManager{vkcppDevice};
     };

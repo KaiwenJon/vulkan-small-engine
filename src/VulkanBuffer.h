@@ -22,7 +22,7 @@ public:
         VkMemoryPropertyFlags properties
     );
 
-    virtual void destroy();
+    // void destroy();
     VkBuffer getBuffer(){return buffer;}
     void copyBufferTo(
         VulkanCommandManager& vkcppCmdManager,  

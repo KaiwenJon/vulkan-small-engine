@@ -5,7 +5,12 @@
 #include "VulkanImageUtils.h"
 
 namespace vkcpp{
-
+VulkanSwapChain::~VulkanSwapChain()
+{
+    cleanup();
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    vkDestroyRenderPass(device, renderPass, nullptr);
+}
 
 void VulkanSwapChain::init(){
     createSwapChain();

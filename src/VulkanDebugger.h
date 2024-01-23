@@ -9,7 +9,7 @@ namespace vkcpp{
 
 class VulkanDebugger{
 public:
-    VulkanDebugger();
+    VulkanDebugger(VkInstance instance) : instance(instance){};
     ~VulkanDebugger();
     VulkanDebugger(const VulkanDebugger& other) = delete;
     VulkanDebugger& operator=(const VulkanDebugger& other) = delete;
@@ -29,6 +29,7 @@ public:
 
 private:
     VkDebugUtilsMessengerEXT debugMessenger;
+    VkInstance& instance;
 };
 
 ;

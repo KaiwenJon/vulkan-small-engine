@@ -10,13 +10,7 @@
 #include "VulkanCommand.h"
 #include "utils.h"
 
-namespace std {
-    template<> struct hash<vkcpp::Vertex> {
-        size_t operator()(vkcpp::Vertex const& vertex) const {
-            return ((hash<glm::vec3>()(vertex.pos) ^ (hash<glm::vec3>()(vertex.color) << 1)) >> 1) ^ (hash<glm::vec2>()(vertex.texCoord) << 1);
-        }
-    };
-}
+
 namespace vkcpp{
 
 

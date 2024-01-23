@@ -17,5 +17,10 @@ void VulkanWindow::init(){
     glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
 }
 
+VulkanWindow::~VulkanWindow(){
+    glfwDestroyWindow(window);
+    glfwTerminate();
+}
+
 
 }

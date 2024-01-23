@@ -1,6 +1,10 @@
 #include "VulkanCommand.h"
 #include "utils.h"
 namespace vkcpp{
+VulkanCommandManager::~VulkanCommandManager()
+{
+    vkDestroyCommandPool(vkcppDevice.getLogicalDevice(), commandPool, nullptr);
+}
 
 void VulkanCommandManager::init(){
     QueueFamilyIndices queueFamilyIndices = vkcppDevice.getQueueFamilyIndices();

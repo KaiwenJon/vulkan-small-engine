@@ -5,6 +5,14 @@
 #include <unordered_map>
 #include "utils.h"
 
+
+namespace std {
+    template<> struct hash<vkcpp::Vertex> {
+        size_t operator()(vkcpp::Vertex const& vertex) const {
+            return ((hash<glm::vec3>()(vertex.pos) ^ (hash<glm::vec3>()(vertex.color) << 1)) >> 1) ^ (hash<glm::vec2>()(vertex.texCoord) << 1);
+        }
+    };
+}
 namespace vkcpp{
 
 std::vector<VkVertexInputBindingDescription> Vertex::getBindingDescriptions(){
@@ -84,14 +92,14 @@ void VulkanModel::loadModel(VulkanCommandManager& vkcppCmdManager, const std::st
     VulkanBuffer vkcppStagingBufferVertex(vkcppDevice);
     vkcppStagingBufferVertex.create(vertices.data(), bufferSizeVertex, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     vkcppStagingBufferVertex.copyBufferTo(vkcppCmdManager, vkcppVertexBuffer.getBuffer(), bufferSizeVertex);
-    vkcppStagingBufferVertex.destroy();
+    // vkcppStagingBufferVertex.destroy();
 
     // create index buffer
     VkDeviceSize bufferSizeIndex = sizeof(indices[0]) * indices.size();
     VulkanBuffer vkcppStagingBufferIndex(vkcppDevice);
     vkcppStagingBufferIndex.create(indices.data(), bufferSizeIndex, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
     vkcppStagingBufferIndex.copyBufferTo(vkcppCmdManager, vkcppIndexBuffer.getBuffer(), bufferSizeIndex);
-    vkcppStagingBufferIndex.destroy();
+    // vkcppStagingBufferIndex.destroy();
 }
 
 }

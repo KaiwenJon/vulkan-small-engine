@@ -1,4 +1,9 @@
 #include "VulkanCommand.h"
+#include "VulkanModel.h"
+#include "VulkanSwapChain.h"
+#include "VulkanPipeline.h"
+#include "VulkanSyncObj.h"
+
 #include "utils.h"
 namespace vkcpp{
 VulkanCommandManager::~VulkanCommandManager()

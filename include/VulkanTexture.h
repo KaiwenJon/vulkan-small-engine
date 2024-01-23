@@ -4,13 +4,12 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
-#include "VulkanDevice.h"
 #include "VulkanCommand.h"
 
 #include <string>
 
 namespace vkcpp{
-
+class VulkanDevice;
 class VulkanTexture{
 public:
     VulkanTexture(VulkanDevice& vkcppDevice) : vkcppDevice(vkcppDevice){};

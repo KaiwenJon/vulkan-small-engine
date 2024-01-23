@@ -5,10 +5,9 @@
 #include <GLFW/glfw3.h>
 
 #include "VulkanSwapChain.h"
-#include "VulkanDevice.h"
 
 namespace vkcpp{
-
+class VulkanDevice;
 class VulkanPipeline{
 public:
     VulkanPipeline(VulkanDevice& vkcppDevice) : vkcppDevice(vkcppDevice){};

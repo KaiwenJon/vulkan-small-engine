@@ -1,22 +1,35 @@
-CFLAGS = -std=c++17 -O2
+# Compiler
+CC = g++
+
+# Directories
+SRC_DIR = src
+INC_DIR = include
+BUILD_DIR = build
+OUTPUT = vkcppApp
+
+# Source files
+SRCS = $(wildcard $(SRC_DIR)/*.cpp)
+
+# Object files
+OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
+
+# Compiler flags
+CFLAGS = -std=c++17 -O2 -I$(INC_DIR)
+
+# Linker flags
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
-# Automatically find all .cpp source files in the current directory
-SOURCES = $(wildcard *.cpp)
+# Targets
+all: $(OUTPUT)
 
-# List all your header file paths here
-# INCLUDES = -I/path/to/your/header/files -I/another/header/path
+$(OUTPUT): $(OBJS)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-# Generate object file names from source file names
-OBJECTS = $(SOURCES:.cpp=.o)
-
-vkcppApp: $(OBJECTS)
-	g++ $(CFLAGS) -o vkcppApp $(OBJECTS) $(LDFLAGS)
-
-.PHONY: test clean
-
-test: vkcppApp
-	./vkcppApp
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f vkcppApp $(OBJECTS)
+	rm -rf $(BUILD_DIR) $(OUTPUT)
+
+.PHONY: all clean

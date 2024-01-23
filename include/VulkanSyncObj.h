@@ -6,10 +6,9 @@
 
 #include <vector>
 
-#include <VulkanDevice.h>
 
 namespace vkcpp{
-
+class VulkanDevice;
 class VulkanSyncObj{
 public:
     VulkanSyncObj(VulkanDevice& vkcppDevice) : vkcppDevice(vkcppDevice){};

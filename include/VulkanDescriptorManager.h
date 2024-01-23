@@ -3,12 +3,11 @@
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
-#include "VulkanDevice.h"
 #include "VulkanUniformBuffer.h"
 #include "VulkanTexture.h"
 
 namespace vkcpp{
-
+class VulkanDevice;
 class VulkanDescriptorManager{
 public:
     VulkanDescriptorManager(VulkanDevice& vkcppDevice) : vkcppDevice(vkcppDevice){};

@@ -26,7 +26,8 @@ struct Vertex {
         return pos == other.pos && color == other.color && texCoord == other.texCoord;
     }
 };
-
+class VulkanCommandManager;
+class VulkanBuffer;
 class VulkanModel{
 
 public:

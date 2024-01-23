@@ -1,17 +1,16 @@
 #ifndef VULKANCOMMAND_H
-#define VULKANCOMMAND
+#define VULKANCOMMAND_H
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
 #include "VulkanDevice.h"
-#include "VulkanPipeline.h"
-#include "VulkanModel.h"
-#include "VulkanSwapChain.h"
-#include "VulkanSyncObj.h"
 
 namespace vkcpp{
-
+class VulkanModel;
+class VulkanPipeline;
+class VulkanSwapChain;
+class VulkanSyncObj;
 class VulkanCommandManager{
 public:
     VulkanCommandManager(VulkanDevice& vkcppDevice) : vkcppDevice(vkcppDevice){}

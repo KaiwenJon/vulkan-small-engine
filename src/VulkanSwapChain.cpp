@@ -1,5 +1,6 @@
 #include "VulkanSwapChain.h"
 #include "utils.h"
+#include "VulkanDevice.h"
 
 
 #include "VulkanImageUtils.h"

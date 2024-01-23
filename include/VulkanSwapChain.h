@@ -1,11 +1,8 @@
 #ifndef VULKANSWAPCHAIN_H
-#define VULKANSWAPCHAIN
-
-#include "VulkanResource.h"
-#include "VulkanWindow.h"
+#define VULKANSWAPCHAIN_H
 
 namespace vkcpp{
-
+class VulkanDevice;
 class VulkanSwapChain{
 public:
     VulkanSwapChain(VulkanDevice& vkcppDevice, GLFWwindow* window)

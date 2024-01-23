@@ -7,11 +7,9 @@
 #include <memory>
 #include <vector>
 
-#include "VulkanResource.h"
 #include "VulkanWindow.h"
 #include "VulkanSwapChain.h"
 #include "VulkanPipeline.h"
-#include "VulkanCommand.h"
 #include "VulkanTexture.h"
 #include "VulkanDescriptorManager.h"
 #include "VulkanSyncObj.h"
@@ -19,7 +17,8 @@
 #include "VulkanUniformBuffer.h"
 
 namespace vkcpp{
-
+class VulkanResource;
+class VulkanCommandManager;
 class VulkanRenderer{
 public:
     VulkanRenderer(VulkanResource& vkcppResource, VulkanWindow& vkcppWindow)
@@ -62,7 +61,7 @@ private:
     // resources for all flying frames
     int cur_resource_idx = 0;
     void initResourcesAllFrames();
-    void VulkanRenderer::updateUniformBuffer(int cur_resource_idx);
+    void updateUniformBuffer(int cur_resource_idx);
     int numFrames = 3;
     std::vector<VulkanSyncObj> vkcppSyncObjs;
     std::vector<VulkanUniformBuffer> vkcppUniformBuffers;

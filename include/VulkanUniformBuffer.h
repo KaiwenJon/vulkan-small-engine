@@ -4,7 +4,7 @@
 #include "VulkanBuffer.h"
 
 namespace vkcpp{
-
+class VulkanDevice;
 class VulkanUniformBuffer  : public VulkanBuffer{
 public:
     VulkanUniformBuffer(VulkanDevice& vkcppDevice) : VulkanBuffer(vkcppDevice){};

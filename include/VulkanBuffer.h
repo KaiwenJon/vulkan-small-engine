@@ -16,6 +16,12 @@ public:
     ~VulkanBuffer();
     VulkanBuffer(const VulkanBuffer& other) = delete;
     VulkanBuffer& operator=(const VulkanBuffer& other) = delete;
+    VulkanBuffer(VulkanBuffer&& other) : vkcppDevice(other.vkcppDevice){
+        buffer = other.buffer;
+        bufferMemory = other.bufferMemory;
+        bufferSize = other.bufferSize;
+        // actually we're moving handle, so no need to clear other.
+    }
     void create(
         void *hostData, 
         VkDeviceSize size, 

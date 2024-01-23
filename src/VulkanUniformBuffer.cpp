@@ -25,13 +25,6 @@ void VulkanUniformBuffer::createUniformBuffer(VkDeviceSize size){
 
 }
 
-template <typename T>
-void VulkanUniformBuffer::updateUniform(const T& newData){
-    if(sizeof(T) > bufferSize){
-        throw std::runtime_error("Uniform buffer update failed: data size is larger than allocated buffer size.");
-    }
-    memcpy(uniformBufferMapped, &newData, sizeof(T));
-}
 
 
 }

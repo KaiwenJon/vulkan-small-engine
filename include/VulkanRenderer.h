@@ -35,7 +35,14 @@ public:
     
     // vkcppSyncObjs(std::move(std::vector<VulkanSyncObj>(numFrames, VulkanSyncObj(vkcppResource.getDevice())))),
     // vkcppUniformBuffers(std::move(std::vector<VulkanUniformBuffer>(numFrames, VulkanUniformBuffer(vkcppResource.getDevice()))))
-    {}
+    {
+        // initializer list, use copy
+        // use emplace back and define move construct
+        for(int i=0; i<numFrames; i++){
+            vkcppSyncObjs.emplace_back(vkcppResource.getDevice());
+            vkcppUniformBuffers.emplace_back(vkcppResource.getDevice());
+        }
+    }
     ;
     ~VulkanRenderer();
     VulkanRenderer(const VulkanRenderer& other) = delete;

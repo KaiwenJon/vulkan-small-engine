@@ -84,23 +84,6 @@ void VulkanDescriptorManager::bindTexture(VulkanTexture &vkcppTexture, int setId
     
 }
 
-template <typename T>
-void VulkanDescriptorManager::bindUniform(VulkanUniformBuffer& vkcppUniformBuffer, int setIdx, int binding)
-{
-    VkDescriptorBufferInfo bufferInfo{};
-    bufferInfo.buffer = vkcppUniformBuffer.getBuffer();
-    bufferInfo.offset = 0;
-    bufferInfo.range = sizeof(T);
-    std::vector<VkWriteDescriptorSet> descriptorWrites(1);
-    descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-    descriptorWrites[0].dstSet = descriptorSets[setIdx];
-    descriptorWrites[0].dstBinding = binding;
-    descriptorWrites[0].dstArrayElement = 0;
-    descriptorWrites[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    descriptorWrites[0].descriptorCount = 1;
-    descriptorWrites[0].pBufferInfo = &bufferInfo;
-    vkUpdateDescriptorSets(vkcppDevice.getLogicalDevice(), static_cast<uint32_t>(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
-}
 
 
 

@@ -15,6 +15,11 @@ public:
     ~VulkanSyncObj();
     VulkanSyncObj(const VulkanSyncObj& other) = delete;
     VulkanSyncObj& operator=(const VulkanSyncObj& other) = delete;
+    VulkanSyncObj(VulkanSyncObj&& other) : vkcppDevice(other.vkcppDevice){
+        imageAvailableSemaphore = other.imageAvailableSemaphore;
+        renderFinishedSemaphore = other.renderFinishedSemaphore;
+        inFlightFence = other.inFlightFence;
+    }
 
     void create();
     void waitFence();

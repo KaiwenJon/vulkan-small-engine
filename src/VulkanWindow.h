@@ -13,12 +13,12 @@ public:
 
     void init();
     GLFWwindow *getGLFWwindow() const { return window; }
+    bool framebufferResized = false;
 private:
     uint32_t WIDTH;
     uint32_t HEIGHT;
     static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
     GLFWwindow* window;
-    bool framebufferResized = false;
 }
 ;
 

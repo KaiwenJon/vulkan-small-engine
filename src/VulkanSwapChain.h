@@ -18,9 +18,14 @@ public:
     VulkanSwapChain& operator=(const VulkanSwapChain& other) = delete;
 
     void init();
+    void recreate();
+    uint32_t getNextImageIdx(VkSemaphore imageAvailableSemaphore);
+    void present();
     VkSwapchainKHR getSwapChain(){return swapChain;}
     VkRenderPass getRenderPass(){return renderPass;}
     VkSampleCountFlagBits getMsaaSamples(){return msaaSamples;}
+    VkExtent2D getExtent(){return swapChainExtent;}
+    std::vector<VkFramebuffer>& getFrameBuffers(){return swapChainFramebuffers;}
 private:
     void createSwapChain();
     void createImageViews();
@@ -28,6 +33,7 @@ private:
     void createColorResources();
     void createDepthResources();
     void createFramebuffers();
+    void cleanup();
     
     GLFWwindow* window;
     VulkanDevice& vkcppDevice;

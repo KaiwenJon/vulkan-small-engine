@@ -16,6 +16,8 @@ public:
     VulkanPipeline& operator=(const VulkanPipeline& other) = delete;
 
     void createPipeline(VkDevice device, VulkanSwapChain& vkcppSwapChain, VkDescriptorSetLayout descriptorSetLayout);
+    VkPipelineLayout getPipelineLayout(){return pipelineLayout;}
+    VkPipeline getGraphicsPipeline(){return graphicsPipeline;}
 private:
     VkPipelineLayout pipelineLayout;
     VkPipeline graphicsPipeline;

@@ -43,6 +43,9 @@ public:
     VulkanModel& operator=(const VulkanModel& other) = delete;
 
     void loadModel(VulkanCommandManager& vkcppCmdManager, const std::string& model_path);
+    VkBuffer getVertexBuffer(){return vkcppVertexBuffer.getBuffer();}
+    VkBuffer getIndexBuffer(){return vkcppIndexBuffer.getBuffer();}
+    int getIndiceSize() const {return indices.size();}
 private:
     VulkanDevice& vkcppDevice;
     std::vector<Vertex> vertices;

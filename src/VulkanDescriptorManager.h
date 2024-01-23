@@ -19,10 +19,10 @@ public:
     void createLayout();
     void createPool(int uboCnt, int texCnt, int maxSets);
     void createSameDescriptorSets(int numSets);
-    template<typename T>
-    void bindUniform(VulkanUniformBuffer& vkcppUniformBuffer, int setIdx, int binding);
+    template<typename T> void bindUniform(VulkanUniformBuffer& vkcppUniformBuffer, int setIdx, int binding);
     void bindTexture(VulkanTexture& vkcppTexture, int setIdx, int binding);
     VkDescriptorSetLayout getLayout(){return descriptorSetLayout;}
+    std::vector<VkDescriptorSet>& getDescriptorSets(){return descriptorSets;}
 
 private:
     VulkanDevice& vkcppDevice;

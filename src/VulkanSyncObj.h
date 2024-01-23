@@ -17,14 +17,16 @@ public:
     VulkanSyncObj(const VulkanSyncObj& other) = delete;
     VulkanSyncObj& operator=(const VulkanSyncObj& other) = delete;
 
-    void create(int numFrames);
+    void create();
+    void waitFence();
+    void resetFence();
+    VkSemaphore imageAvailableSemaphore;
+    VkSemaphore renderFinishedSemaphore;
+    VkFence inFlightFence;
 
 private:
     VulkanDevice& vkcppDevice;
 
-    std::vector<VkSemaphore> imageAvailableSemaphores;
-    std::vector<VkSemaphore> renderFinishedSemaphores;
-    std::vector<VkFence> inFlightFences;
 
 }
 ;

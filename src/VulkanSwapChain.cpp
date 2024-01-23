@@ -16,6 +16,40 @@ void VulkanSwapChain::init(){
     createFramebuffers();
 }
 
+void VulkanSwapChain::recreate(){
+    int width = 0, height = 0;
+    glfwGetFramebufferSize(window, &width, &height);
+    while (width == 0 || height == 0) {
+        glfwGetFramebufferSize(window, &width, &height);
+        glfwWaitEvents();
+    }
+    vkDeviceWaitIdle(vkcppDevice.getLogicalDevice());
+
+    cleanup();
+
+    createSwapChain();
+    createImageViews();
+    createColorResources();
+    createDepthResources();
+    createFramebuffers();
+
+    // if renderpass not compatible, need to recreate, then recreate pipeline.
+}
+
+uint32_t VulkanSwapChain::getNextImageIdx(VkSemaphore imageAvailableSemaphore)
+{
+    uint32_t imageIndex;
+    VkResult result = vkAcquireNextImageKHR(vkcppDevice.getLogicalDevice(), swapChain, UINT64_MAX, imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
+
+    if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+        recreate();
+        return;
+    } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+        throw std::runtime_error("failed to acquire swap chain image!");
+    }
+    return imageIndex;
+}
+
 void VulkanSwapChain::createSwapChain(){
     VkDevice device = vkcppDevice.getLogicalDevice();
     VkPhysicalDevice physicalDevice = vkcppDevice.getPhysicalDevice();
@@ -191,4 +225,24 @@ void VulkanSwapChain::createFramebuffers() {
     }
 }
 
+void VulkanSwapChain::cleanup(){
+    VkDevice device = vkcppDevice.getLogicalDevice();
+    vkDestroyImageView(device, depthImageView, nullptr);
+    vkDestroyImage(device, depthImage, nullptr);
+    vkFreeMemory(device, depthImageMemory, nullptr);
+
+    vkDestroyImageView(device, colorImageView, nullptr);
+    vkDestroyImage(device, colorImage, nullptr);
+    vkFreeMemory(device, colorImageMemory, nullptr);
+
+    for (auto framebuffer : swapChainFramebuffers) {
+        vkDestroyFramebuffer(device, framebuffer, nullptr);
+    }
+
+    for (auto imageView : swapChainImageViews) {
+        vkDestroyImageView(device, imageView, nullptr);
+    }
+
+    vkDestroySwapchainKHR(device, swapChain, nullptr);
+}
 }

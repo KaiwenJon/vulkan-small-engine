@@ -39,22 +39,22 @@ private:
     GLFWwindow* window; // created window, received when init
     VulkanDevice& vkcppDevice;
 
-    VkSwapchainKHR swapChain;
+    VkSwapchainKHR swapChain = VK_NULL_HANDLE;
     std::vector<VkImage> swapChainImages;
     VkFormat swapChainImageFormat;
     VkExtent2D swapChainExtent;
     std::vector<VkImageView> swapChainImageViews;
     std::vector<VkFramebuffer> swapChainFramebuffers;
     VkSampleCountFlagBits msaaSamples = VK_SAMPLE_COUNT_1_BIT;
-    VkRenderPass renderPass;
+    VkRenderPass renderPass = VK_NULL_HANDLE;
 
-    VkImage colorImage;
-    VkDeviceMemory colorImageMemory;
-    VkImageView colorImageView;
+    VkImage colorImage = VK_NULL_HANDLE;
+    VkDeviceMemory colorImageMemory = VK_NULL_HANDLE;
+    VkImageView colorImageView = VK_NULL_HANDLE;
 
-    VkImage depthImage;
-    VkDeviceMemory depthImageMemory;
-    VkImageView depthImageView;
+    VkImage depthImage = VK_NULL_HANDLE;
+    VkDeviceMemory depthImageMemory = VK_NULL_HANDLE;
+    VkImageView depthImageView = VK_NULL_HANDLE;
 
 }
 ;

@@ -41,7 +41,7 @@ public:
 
 private:
     VulkanDevice& vkcppDevice;
-    VkCommandPool commandPool;
+    VkCommandPool commandPool = VK_NULL_HANDLE;
     std::vector<VkCommandBuffer> commandBuffers;
 
 }

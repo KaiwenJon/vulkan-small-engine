@@ -3,6 +3,7 @@
 #include "VulkanSwapChain.h"
 #include "VulkanPipeline.h"
 #include "VulkanSyncObj.h"
+#include <iostream>
 
 #include "utils.h"
 namespace vkcpp{
@@ -13,7 +14,7 @@ VulkanCommandManager::~VulkanCommandManager()
 
 void VulkanCommandManager::init(){
     QueueFamilyIndices queueFamilyIndices = vkcppDevice.getQueueFamilyIndices();
-
+    std::cout << queueFamilyIndices.graphicsFamily.value() << " " << queueFamilyIndices.presentFamily.value() << std::endl;
     VkCommandPoolCreateInfo poolInfo{};
     poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
     poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
